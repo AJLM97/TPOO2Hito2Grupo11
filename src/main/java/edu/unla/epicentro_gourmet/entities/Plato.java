@@ -1,7 +1,15 @@
 package edu.unla.epicentro_gourmet.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@Table(name = "platos")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Plato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

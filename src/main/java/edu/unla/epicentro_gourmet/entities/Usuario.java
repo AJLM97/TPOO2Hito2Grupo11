@@ -28,6 +28,12 @@ public class Usuario {
     @Column(name = "baja_logica", nullable = false)
     private boolean bajaLogica = false;
 
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private Empleado empleado;
+
+    @OneToOne(mappedBy = "responsable", fetch = FetchType.LAZY)
+    private UnidadVenta unidadVenta;
+
     public Usuario(String email, String password, EnumRolUsuario rol) {
         this.email = email;
         this.password = password;

@@ -31,14 +31,14 @@ public class Pedido {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unidad_venta_id", nullable = false)
-    private UnidadVenta unidad;
+    private UnidadVenta unidadVenta;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<ItemPedido> items = new HashSet<>();
 
-    public Pedido(LocalDateTime fechaTransaccion, UnidadVenta unidad) {
+    public Pedido(LocalDateTime fechaTransaccion, UnidadVenta unidadVenta) {
         this.fechaTransaccion = fechaTransaccion;
-        this.unidad = unidad;
+        this.unidadVenta = unidadVenta;
         this.cerrado = false;
     }
 }

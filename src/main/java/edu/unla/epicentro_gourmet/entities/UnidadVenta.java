@@ -25,6 +25,7 @@ public abstract class UnidadVenta {
     @Column(nullable = false)
     protected double superficie;
 
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_responsable_usuario", unique = true)
     protected Usuario responsable;
 
