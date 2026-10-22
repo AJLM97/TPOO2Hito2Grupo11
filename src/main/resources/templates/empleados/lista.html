@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Staff - Epicentro Gourmet</title>
+    <link rel="stylesheet" href="https://jsdelivr.net">
+</head>
+<body class="container mt-4">
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Gestión de Empleados de la Unidad</h2>
+    <a th:href="@{/empleados/nuevo(idUnidad=${idUnidadActual})}" class="btn btn-primary">+ Dar de Alta Empleado</a>
+</div>
+
+<div th:if="${mensajeExito}" class="alert alert-success" th:text="${mensajeExito}"></div>
+<div th:if="${mensajeError}" class="alert alert-danger" th:text="${mensajeError}"></div>
+
+<table class="table table-striped table-hover mt-3">
+    <thead class="table-dark">
+    <tr>
+        <th>DNI</th>
+        <th>Nombre Completo</th>
+        <th>Tipo</th>
+        <th>Sueldo Base</th>
+        <th>Usuario Corporativo</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="emp : ${empleados}">
+        <td th:text="${emp.dni}"></td>
+        <td th:text="${emp.apellido + ', ' + emp.nombre}"></td>
+        <td>
+            <span th:if="${emp instanceof T(edu.unla.epicentro_gourmet.entities.Cajero)}"
+                  class="badge bg-info text-dark">Cajero</span>
+            <span th:if="${emp instanceof T(edu.unla.epicentro_gourmet.entities.Cocinero)}"
+                  class="badge bg-warning text-dark">Cocinero</span>
+        </td>
+        <td th:text="${'$' + emp.sueldoBase}"></td>
+        <td th:text="${emp.usuario != null ? emp.usuario.email : 'Sin asignar'}"></td>
+        <td>
+            <form th:action="@{/empleados/eliminar/{id}(id=${emp.idEmpleado})}" method="POST" style="display:inline;">
+                <input type="hidden" name="idUnidad" th:value="${idUnidadActual}"/>
+                <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('¿Seguro que desea aplicar baja lógica a este empleado?')">Baja Lógica
+                </button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(empleados)}">
+        <td colspan="6" class="text-center text-muted">No hay empleados activos registrados en esta unidad.</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
