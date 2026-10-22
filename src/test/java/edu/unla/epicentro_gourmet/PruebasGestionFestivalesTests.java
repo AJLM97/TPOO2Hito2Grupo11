@@ -4,6 +4,7 @@ import com.jayway.jsonpath.JsonPath;
 import edu.unla.epicentro_gourmet.entities.EnumTemporadaFestival;
 import edu.unla.epicentro_gourmet.entities.Festival;
 import edu.unla.epicentro_gourmet.entities.FoodTruck;
+import edu.unla.epicentro_gourmet.entities.PuestoDesarmable;
 import edu.unla.epicentro_gourmet.repositories.IFestivalRepositorio;
 import edu.unla.epicentro_gourmet.repositories.IUnidadVentaRepositorio;
 import org.junit.jupiter.api.BeforeEach;
@@ -134,6 +135,32 @@ class PruebasGestionFestivalesTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"nombre\":\"Festival incompleto\",\"temporada\":\"VERANO\"}"))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testCU02ListarUnidadesDelFestival() throws Exception {
+        Festival festival = festivalRepositorio.save(festival("Festival con unidades"));
+        unidadVentaRepositorio.save(new FoodTruck(
+                "Food Truck Uno", "FT-001", 20.0, festival, "ABC123", true, null));
+        unidadVentaRepositorio.save(new PuestoDesarmable(
+                "Puesto Uno", "PD-001", 12.0, festival, 2, 45, null));
+
+        mockMvc.perform(get("/api/v1/festivales/{id}/unidades", festival.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].codigo").value("FT-001"))
+                .andExpect(jsonPath("$[0].tipo").value("FoodTruck"))
+                .andExpect(jsonPath("$[0].patente").value("ABC123"))
+                .andExpect(jsonPath("$[0].conexionElectrica").value(true))
+                .andExpect(jsonPath("$[1].codigo").value("PD-001"))
+                .andExpect(jsonPath("$[1].tipo").value("PuestoDesarmable"))
+                .andExpect(jsonPath("$[1].cantidadDeCarpas").value(2))
+                .andExpect(jsonPath("$[1].tiempoMontajeMinutos").value(45));
+    }
+
+    @Test
+    void testCU02FestivalInexistenteRespondeNoEncontrado() throws Exception {
+        mockMvc.perform(get("/api/v1/festivales/99999/unidades"))
+                .andExpect(status().isNotFound());
     }
 
     private Festival festival(String nombre) {

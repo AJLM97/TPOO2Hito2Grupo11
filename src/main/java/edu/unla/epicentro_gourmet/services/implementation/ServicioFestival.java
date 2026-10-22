@@ -1,9 +1,14 @@
 package edu.unla.epicentro_gourmet.services.implementation;
 
 import edu.unla.epicentro_gourmet.dtos.RespuestaFestival;
+import edu.unla.epicentro_gourmet.dtos.RespuestaUnidadVenta;
 import edu.unla.epicentro_gourmet.dtos.SolicitudFestival;
 import edu.unla.epicentro_gourmet.entities.Festival;
+import edu.unla.epicentro_gourmet.entities.FoodTruck;
+import edu.unla.epicentro_gourmet.entities.PuestoDesarmable;
+import edu.unla.epicentro_gourmet.entities.UnidadVenta;
 import edu.unla.epicentro_gourmet.repositories.IFestivalRepositorio;
+import edu.unla.epicentro_gourmet.repositories.IUnidadVentaRepositorio;
 import edu.unla.epicentro_gourmet.services.IServicioFestival;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -17,10 +22,16 @@ import java.util.List;
 @Transactional
 public class ServicioFestival implements IServicioFestival {
     private final IFestivalRepositorio festivalRepositorio;
+    private final IUnidadVentaRepositorio unidadVentaRepositorio;
     private final ModelMapper modelMapper;
 
-    public ServicioFestival(IFestivalRepositorio festivalRepositorio, ModelMapper modelMapper) {
+    public ServicioFestival(
+            IFestivalRepositorio festivalRepositorio,
+            IUnidadVentaRepositorio unidadVentaRepositorio,
+            ModelMapper modelMapper
+    ) {
         this.festivalRepositorio = festivalRepositorio;
+        this.unidadVentaRepositorio = unidadVentaRepositorio;
         this.modelMapper = modelMapper;
     }
 
@@ -66,6 +77,16 @@ public class ServicioFestival implements IServicioFestival {
         festivalRepositorio.delete(festival);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<RespuestaUnidadVenta> listarUnidades(Long festivalId) {
+        Festival festival = buscarPorId(festivalId);
+        return unidadVentaRepositorio.findByFestival_Id(festival.getId()).stream()
+                .sorted((primera, segunda) -> primera.getCodigo().compareToIgnoreCase(segunda.getCodigo()))
+                .map(this::mapearUnidadVenta)
+                .toList();
+    }
+
     private Festival buscarPorId(Long id) {
         return festivalRepositorio.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Festival no encontrado"));
@@ -82,5 +103,19 @@ public class ServicioFestival implements IServicioFestival {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "La fecha de fin no puede ser anterior a la fecha de inicio");
         }
+    }
+
+    private RespuestaUnidadVenta mapearUnidadVenta(UnidadVenta unidad) {
+        RespuestaUnidadVenta respuesta = modelMapper.map(unidad, RespuestaUnidadVenta.class);
+        if (unidad instanceof FoodTruck foodTruck) {
+            respuesta.setTipo("FoodTruck");
+            respuesta.setPatente(foodTruck.getPatente());
+            respuesta.setConexionElectrica(foodTruck.isConexionElectrica());
+        } else if (unidad instanceof PuestoDesarmable puesto) {
+            respuesta.setTipo("PuestoDesarmable");
+            respuesta.setCantidadDeCarpas(puesto.getCantidadDeCarpas());
+            respuesta.setTiempoMontajeMinutos(puesto.getTiempoMontajeMinutos());
+        }
+        return respuesta;
     }
 }

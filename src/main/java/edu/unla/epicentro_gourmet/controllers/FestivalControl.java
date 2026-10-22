@@ -1,6 +1,7 @@
 package edu.unla.epicentro_gourmet.controllers;
 
 import edu.unla.epicentro_gourmet.dtos.RespuestaFestival;
+import edu.unla.epicentro_gourmet.dtos.RespuestaUnidadVenta;
 import edu.unla.epicentro_gourmet.dtos.SolicitudFestival;
 import edu.unla.epicentro_gourmet.services.IServicioFestival;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/festivales")
@@ -52,5 +55,10 @@ public class FestivalControl {
     public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) {
         servicioFestival.eliminar(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/{id}/unidades", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RespuestaUnidadVenta>> listarUnidades(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(servicioFestival.listarUnidades(id), HttpStatus.OK);
     }
 }
