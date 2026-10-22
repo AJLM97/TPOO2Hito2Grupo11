@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service("servicioFestival")
 @Transactional
 public class ServicioFestival implements IServicioFestival {
@@ -20,6 +22,22 @@ public class ServicioFestival implements IServicioFestival {
     public ServicioFestival(IFestivalRepositorio festivalRepositorio, ModelMapper modelMapper) {
         this.festivalRepositorio = festivalRepositorio;
         this.modelMapper = modelMapper;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RespuestaFestival> listar() {
+        return festivalRepositorio.findAll(org.springframework.data.domain.Sort.by(
+                        org.springframework.data.domain.Sort.Direction.ASC, "fechInicio"))
+                .stream()
+                .map(festival -> modelMapper.map(festival, RespuestaFestival.class))
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public RespuestaFestival buscar(Long id) {
+        return modelMapper.map(buscarPorId(id), RespuestaFestival.class);
     }
 
     @Override

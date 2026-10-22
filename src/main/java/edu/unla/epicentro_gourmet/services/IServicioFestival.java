@@ -3,7 +3,13 @@ package edu.unla.epicentro_gourmet.services;
 import edu.unla.epicentro_gourmet.dtos.RespuestaFestival;
 import edu.unla.epicentro_gourmet.dtos.SolicitudFestival;
 
+import java.util.List;
+
 public interface IServicioFestival {
+    List<RespuestaFestival> listar();
+
+    RespuestaFestival buscar(Long id);
+
     RespuestaFestival crear(SolicitudFestival solicitud);
 
     RespuestaFestival actualizar(Long id, SolicitudFestival solicitud);

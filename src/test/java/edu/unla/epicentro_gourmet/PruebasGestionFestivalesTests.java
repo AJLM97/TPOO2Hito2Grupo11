@@ -19,6 +19,7 @@ import java.time.LocalDate;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -41,6 +42,35 @@ class PruebasGestionFestivalesTests {
     void limpiarDatos() {
         unidadVentaRepositorio.deleteAll();
         festivalRepositorio.deleteAll();
+    }
+
+    @Test
+    void testCU01ListarFestivalesOrdenadosPorFechaInicio() throws Exception {
+        festivalRepositorio.save(festival("Festival Diciembre", LocalDate.of(2026, 12, 1)));
+        festivalRepositorio.save(festival("Festival Noviembre", LocalDate.of(2026, 11, 1)));
+
+        mockMvc.perform(get("/api/v1/festivales"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].nombre").value("Festival Noviembre"))
+                .andExpect(jsonPath("$[0].fechaInicio").value("2026-11-01"))
+                .andExpect(jsonPath("$[1].nombre").value("Festival Diciembre"));
+    }
+
+    @Test
+    void testCU01ConsultarFestivalExistente() throws Exception {
+        Festival festival = festivalRepositorio.save(festival("Festival Consultado", LocalDate.of(2026, 11, 1)));
+
+        mockMvc.perform(get("/api/v1/festivales/{id}", festival.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(festival.getId()))
+                .andExpect(jsonPath("$.nombre").value("Festival Consultado"))
+                .andExpect(jsonPath("$.fechaInicio").value("2026-11-01"));
+    }
+
+    @Test
+    void testCU01ResponderNoEncontradoParaFestivalInexistente() throws Exception {
+        mockMvc.perform(get("/api/v1/festivales/99999"))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -107,8 +137,12 @@ class PruebasGestionFestivalesTests {
     }
 
     private Festival festival(String nombre) {
+        return festival(nombre, LocalDate.of(2026, 11, 1));
+    }
+
+    private Festival festival(String nombre, LocalDate fechaInicio) {
         return new Festival(nombre, EnumTemporadaFestival.VERANO,
-                LocalDate.of(2026, 11, 1), LocalDate.of(2026, 11, 3), null);
+                fechaInicio, fechaInicio.plusDays(2), null);
     }
 
     private String jsonFestival(String nombre, String fechaInicio, String fechaFin) {
