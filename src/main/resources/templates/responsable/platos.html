@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header d-flex justify-content-between align-items-center">
+        <h2>Platos</h2>
+        <a th:href="@{/responsable/platos/nuevo}" class="btn btn-primary">Agregar Plato</a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Precio de Venta</th>
+                        <th>Costo de Producción</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="plato : ${platos}">
+                        <td th:text="${plato.id}"></td>
+                        <td th:text="${plato.nombre}"></td>
+                        <td th:text="${plato.precioVenta}"></td>
+                        <td th:text="${plato.costoProduccion}"></td>
+                        <td class="action-buttons"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${platos == null or platos.isEmpty()}" class="text-center text-muted py-4">
+                No hay platos registrados.
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>

@@ -25,8 +25,8 @@ public class Usuario {
     @Column(nullable = false)
     private EnumRolUsuario rol;
 
-    @Column(name = "baja_logica", nullable = false)
-    private boolean bajaLogica = false;
+    @Column(nullable = false)
+    private boolean activo;
 
     @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
     private Empleado empleado;
@@ -34,10 +34,10 @@ public class Usuario {
     @OneToOne(mappedBy = "responsable", fetch = FetchType.LAZY)
     private UnidadVenta unidadVenta;
 
-    public Usuario(String email, String password, EnumRolUsuario rol) {
+    public Usuario(String email, String password, EnumRolUsuario rol, boolean activo) {
         this.email = email;
         this.password = password;
         this.rol = rol;
-        this.bajaLogica = false;
+        this.activo = activo;
     }
 }
