@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Editar Empleado</h2>
+    </div>
+
+    <div class="card form-card">
+        <div class="card-body">
+            <form th:action="@{/responsable/empleados/actualizar}" th:object="${empleado}" method="post">
+                <input type="hidden" th:field="*{id}">
+                <input type="hidden" th:field="*{tipoEmpleado}">
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                    <ul class="mb-0">
+                        <li th:each="error : ${#fields.errors('*')}" th:text="${error}"></li>
+                    </ul>
+                </div>
+                <div class="mb-3">
+                    <label for="nombre" class="col-form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required placeholder="Ingrese el nombre"/>
+                </div>
+                <div class="mb-3">
+                    <label for="apellido" class="col-form-label">Apellido</label>
+                    <input type="text" class="form-control" id="apellido" th:field="*{apellido}" required placeholder="Ingrese el apellido"/>
+                </div>
+                <div th:if="${empleado.tipoEmpleado == 'CAJERO'}" class="mb-3">
+                    <label for="turnoCajero" class="col-form-label">Turno</label>
+                    <select id="turnoCajero" th:field="*{turnoTrabajo}" class="form-select">
+                        <option value="MANANA">Mañana</option>
+                        <option value="TARDE">Tarde</option>
+                        <option value="NOCHE">Noche</option>
+                    </select>
+                </div>
+                <div th:if="${empleado.tipoEmpleado == 'COCINERO'}" class="mb-3">
+                    <label for="categoriaCocinero" class="col-form-label">Categoría</label>
+                    <select id="categoriaCocinero" th:field="*{categoriaCocinero}" class="form-select">
+                        <option value="COCINERO">Cocinero</option>
+                        <option value="COCINERO_AYUDANTE">Cocinero ayudante</option>
+                        <option value="LAVAPLATOS">Lavaplatos</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="sueldoBase" class="col-form-label">Sueldo base</label>
+                    <input type="number" step="0.01" min="1.00" id="sueldoBase" th:field="*{sueldoBase}" class="form-control" required />
+                </div>
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-success mr-2">Actualizar</button>
+                    <a th:href="@{/responsable/empleados}" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>
