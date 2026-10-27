@@ -12,4 +12,7 @@ public interface IUnidadVentaService {
     public UnidadVenta save(UnidadVenta unidadVenta);
 
     public void delete(long id);
+
+    public UnidadVenta getUnidadVentaFromResponsableEmail(String email);
+
 }
