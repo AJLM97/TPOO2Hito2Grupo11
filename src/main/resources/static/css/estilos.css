@@ -273,6 +273,21 @@ footer {
     color: white;
 }
 
+.form-select {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 48px;
+    padding: 10px 14px;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid var(--gray-light);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .hero-section h1 {

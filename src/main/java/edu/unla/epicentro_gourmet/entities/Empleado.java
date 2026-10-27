@@ -37,7 +37,7 @@ public abstract class Empleado {
     protected double sueldoBase;
 
     @Column(nullable = false)
-    protected boolean activo = false;
+    protected boolean activo = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_unidad_venta")
@@ -57,6 +57,6 @@ public abstract class Empleado {
         this.sueldoBase = sueldoBase;
         this.unidad = unidad;
         this.usuario = usuario;
-        this.activo = false;
+        this.activo = true;
     }
 }

@@ -1,7 +1,10 @@
 package edu.unla.epicentro_gourmet.services;
 
 import edu.unla.epicentro_gourmet.entities.Empleado;
+import edu.unla.epicentro_gourmet.entities.UnidadVenta;
+
 import java.util.List;
+import java.util.Optional;
 
 public interface IEmpleadoService {
 
@@ -9,7 +12,17 @@ public interface IEmpleadoService {
 
     public Empleado save(Empleado empleado);
 
-    public Empleado findById(long id);
+    public Optional<Empleado> findById(long id);
 
-    public void logicalDelete(long id);
+    public void logicalDelete(UnidadVenta unidadVenta, long id);
+
+    public Empleado newEmpleado(Empleado empleado, String emailPersonal);
+
+    public List<Empleado> findByUnidadVenta(UnidadVenta unidadVenta);
+
+    public Optional<Empleado> findByDni(long dni);
+
+    public Optional<Empleado> findByIdAndUnidadVenta(long id, UnidadVenta unidadVenta);
+
+    EnumResultadoAltaEmpleado altaOReactivar(Empleado candidato, String emailPersonal);
 }

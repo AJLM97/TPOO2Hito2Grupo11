@@ -18,7 +18,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
+                        <th>DNI</th>
                         <th>Fecha Ingreso</th>
+                        <th>Puesto</th>
                         <th>Sueldo Base</th>
                         <th>Acciones</th>
                     </tr>
@@ -26,10 +28,23 @@
                     <tbody>
                     <tr th:each="empleado : ${empleados}">
                         <td th:text="${empleado.id}"></td>
-                        <td th:text="${empleado.apellido}, ${empleado.nombre}"></td>
-                        <td th:text="${empleado.responsable.fecha_ingreso}"></td>
-                        <td th:text="${empleado.sueldo_base}"></td>
+                        <td th:text="${empleado.apellido + ', ' + empleado.nombre}"></td>
+                        <td th:text="${empleado.dni}"></td>
+                        <td th:text="${empleado.fechaIngreso}"></td>
+                        <td>
+                            <div
+                                th:classappend="${empleado instanceof T(edu.unla.epicentro_gourmet.entities.Cocinero)} ? 'puesto-cocinero' : 'puesto-cajero'"
+                                th:text="${empleado instanceof T(edu.unla.epicentro_gourmet.entities.Cocinero)
+                                        ? #strings.capitalizeWords(#strings.toLowerCase(#strings.replace(empleado.categoria.name(), '_', ' ')))
+                                        : 'Cajero'}">
+                            </div>
+                        </td>
+                        <td th:text="${#numbers.formatDecimal(empleado.sueldoBase, 1, 2)}"></td>
                         <td class="action-buttons"/>
+                            <a th:href="@{/responsable/empleados/editar/{id}(id=${empleado.id})}" class="btn btn-sm btn-outline-primary">Editar</a>
+                            <form th:action="@{/responsable/empleados/baja/{id}(id=${empleado.id})}" method="post" class="d-inline" onsubmit="return confirm('¿Quieres darle de baja?')">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Dar de Baja</button>
+                            </form>
                         </td>
                     </tr>
                     </tbody>

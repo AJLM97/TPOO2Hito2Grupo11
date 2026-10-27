@@ -35,4 +35,9 @@ public class UnidadVentaService implements IUnidadVentaService {
     public void delete(long id) {
         unidadVentaRepository.deleteById(id);
     }
+
+    @Override
+    public UnidadVenta getUnidadVentaFromResponsableEmail(String email) {
+        return unidadVentaRepository.findUnidadVentaFromResponsableEmail(email);
+    }
 }
