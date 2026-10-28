@@ -13,7 +13,6 @@ import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -48,7 +47,11 @@ public class ResponsableController {
     @GetMapping("/empleados")
     public ModelAndView showAllEmpleado(Authentication authentication) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.RESPONSABLE_EMPLEADOS);
-        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        if (unidadVentaOptional.isEmpty()) {
+            return new ModelAndView(new RedirectView("/responsable/empleados"));
+        }
+        UnidadVenta unidadVenta = unidadVentaOptional.get();
         mAV.addObject("empleados", empleadoService.findByUnidadVenta(unidadVenta));
         return mAV;
     }
@@ -66,7 +69,11 @@ public class ResponsableController {
             return ViewRouteHelper.RESPONSABLE_EMPLEADO_FORM;
         }
 
-        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        if (unidadVentaOptional.isEmpty()) {
+            return "redirect:/responsable/empleados";
+        }
+        UnidadVenta unidadVenta = unidadVentaOptional.get();
         String emailPersonal = empleadoDTO.getEmailPersonal();
 
         EnumResultadoAltaEmpleado estado = null;
@@ -97,8 +104,12 @@ public class ResponsableController {
     }
 
     @GetMapping("/empleados/editar/{id}")
-    public ModelAndView get(@PathVariable("id") int id, Authentication authentication) {
-        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+    public ModelAndView getEmpleado(@PathVariable("id") int id, Authentication authentication) {
+        Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        if (unidadVentaOptional.isEmpty()) {
+            return new ModelAndView(new RedirectView("/responsable/empleados"));
+        }
+        UnidadVenta unidadVenta = unidadVentaOptional.get();
         Optional<Empleado> empleadoOptional = empleadoService.findByIdAndUnidadVenta(id, unidadVenta);
         if (empleadoOptional.isEmpty()) {
             return new ModelAndView(new RedirectView("/responsable/empleados"));
@@ -121,9 +132,9 @@ public class ResponsableController {
     }
 
     @PostMapping("/empleados/actualizar")
-    public String update(@Valid @ModelAttribute("empleado") EmpleadoDTO empleadoDTO, BindingResult result) {
+    public String updateEmpleado(@Valid @ModelAttribute("empleado") EmpleadoDTO empleadoDTO, BindingResult result) {
         if (result.hasErrors()) {
-            return "Responsable/empleados-edit";
+            return "responsable/empleados-edit";
         }
 
         empleadoService.findById(empleadoDTO.getId()).ifPresent(empleadoEncontrado -> {
@@ -142,16 +153,22 @@ public class ResponsableController {
 
     @PostMapping("/empleados/baja/{id}")
     public String deleteEmpleado(@PathVariable("id") int id, Authentication authentication) {
-        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
-        empleadoService.logicalDelete(unidadVenta,id);
+        Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        if (unidadVentaOptional.isPresent()) {
+            UnidadVenta unidadVenta = unidadVentaOptional.get();
+            empleadoService.logicalDelete(unidadVenta, id);
+        }
         return "redirect:/responsable/empleados";
     }
 
     @GetMapping("/platos")
     public ModelAndView showAllPlato(Authentication authentication) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.RESPONSABLE_PLATOS);
-        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
-        mAV.addObject("platos", platoService.findByUnidadVenta(unidadVenta));
+        Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        if (unidadVentaOptional.isPresent()) {
+            UnidadVenta unidadVenta = unidadVentaOptional.get();
+            mAV.addObject("platos", platoService.findByUnidadVenta(unidadVenta));
+        }
         return mAV;
     }
 
@@ -168,7 +185,11 @@ public class ResponsableController {
             return ViewRouteHelper.RESPONSABLE_PLATO_FORM;
         }
 
-        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        if (unidadVentaOptional.isEmpty()) {
+            return "redirect:/responsable/platos";
+        }
+        UnidadVenta unidadVenta = unidadVentaOptional.get();
         Plato plato = new Plato(platoDTO.getNombre(), platoDTO.getPrecioVenta(), platoDTO.getCostoProduccion(), unidadVenta);
 
         if (platoService.altaOReactivar(plato) == EnumResultadoGuardadoPlato.NOMBRE_DUPLICADO) {
@@ -180,7 +201,11 @@ public class ResponsableController {
 
     @GetMapping("/platos/editar/{id}")
     public ModelAndView showFormEditPlato(@PathVariable("id") long id, Authentication authentication) {
-        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        if (unidadVentaOptional.isEmpty()) {
+            return new ModelAndView(new RedirectView("/responsable/platos"));
+        }
+        UnidadVenta unidadVenta = unidadVentaOptional.get();
         Optional<Plato> platoOptional = platoService.findByIdAndUnidadVenta(id, unidadVenta);
         if (platoOptional.isEmpty()) {
             return new ModelAndView(new RedirectView("/responsable/platos"));
@@ -198,7 +223,11 @@ public class ResponsableController {
             return ViewRouteHelper.RESPONSABLE_PLATO_EDIT;
         }
 
-        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        if (unidadVentaOptional.isEmpty()) {
+            return "redirect:/responsable/platos";
+        }
+        UnidadVenta unidadVenta = unidadVentaOptional.get();
         Plato datos = new Plato(platoDTO.getNombre(), platoDTO.getPrecioVenta(), platoDTO.getCostoProduccion(), unidadVenta);
         datos.setId(platoDTO.getId());
 
@@ -212,7 +241,11 @@ public class ResponsableController {
 
     @PostMapping("/platos/baja/{id}")
     public String deletePlato(@PathVariable("id") long id, Authentication authentication) {
-        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        if (unidadVentaOptional.isEmpty()) {
+            return "redirect:/responsable/platos";
+        }
+        UnidadVenta unidadVenta = unidadVentaOptional.get();
         platoService.logicalDelete(unidadVenta, id);
         return "redirect:/responsable/platos";
     }
