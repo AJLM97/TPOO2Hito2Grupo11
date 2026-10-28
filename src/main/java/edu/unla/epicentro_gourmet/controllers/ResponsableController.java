@@ -1,9 +1,11 @@
 package edu.unla.epicentro_gourmet.controllers;
 
 import edu.unla.epicentro_gourmet.dtos.EmpleadoDTO;
+import edu.unla.epicentro_gourmet.dtos.PlatoDTO;
 import edu.unla.epicentro_gourmet.entities.*;
 import edu.unla.epicentro_gourmet.helpers.ViewRouteHelper;
 import edu.unla.epicentro_gourmet.services.EnumResultadoAltaEmpleado;
+import edu.unla.epicentro_gourmet.services.EnumResultadoGuardadoPlato;
 import edu.unla.epicentro_gourmet.services.IEmpleadoService;
 import edu.unla.epicentro_gourmet.services.IPlatoService;
 import edu.unla.epicentro_gourmet.services.IUnidadVentaService;
@@ -146,17 +148,72 @@ public class ResponsableController {
     }
 
     @GetMapping("/platos")
-    public String showAllPlato(Model model) {
-        return ViewRouteHelper.RESPONSABLE_PLATOS;
+    public ModelAndView showAllPlato(Authentication authentication) {
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.RESPONSABLE_PLATOS);
+        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        mAV.addObject("platos", platoService.findByUnidadVenta(unidadVenta));
+        return mAV;
     }
 
     @GetMapping("/platos/nuevo")
-    public String showFormPlato(Model model) {
-        return ViewRouteHelper.RESPONSABLE_PLATO_FORM;
+    public ModelAndView showFormPlato() {
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.RESPONSABLE_PLATO_FORM);
+        mAV.addObject("plato", new PlatoDTO());
+        return mAV;
     }
 
     @PostMapping("/platos/guardar")
-    public RedirectView savePlato(@ModelAttribute("plato") Plato plato) {
-        return new RedirectView("/responsable/platos");
+    public String savePlato(@Valid @ModelAttribute("plato") PlatoDTO platoDTO, BindingResult result, Authentication authentication) {
+        if (result.hasErrors()) {
+            return ViewRouteHelper.RESPONSABLE_PLATO_FORM;
+        }
+
+        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        Plato plato = new Plato(platoDTO.getNombre(), platoDTO.getPrecioVenta(), platoDTO.getCostoProduccion(), unidadVenta);
+
+        if (platoService.altaOReactivar(plato) == EnumResultadoGuardadoPlato.NOMBRE_DUPLICADO) {
+            result.rejectValue("nombre", "duplicado", "Ya existe un plato con ese nombre");
+            return ViewRouteHelper.RESPONSABLE_PLATO_FORM;
+        }
+        return "redirect:/responsable/platos";
+    }
+
+    @GetMapping("/platos/editar/{id}")
+    public ModelAndView showFormEditPlato(@PathVariable("id") long id, Authentication authentication) {
+        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        Optional<Plato> platoOptional = platoService.findByIdAndUnidadVenta(id, unidadVenta);
+        if (platoOptional.isEmpty()) {
+            return new ModelAndView(new RedirectView("/responsable/platos"));
+        }
+
+        Plato plato = platoOptional.get();
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.RESPONSABLE_PLATO_EDIT);
+        mAV.addObject("plato", new PlatoDTO(plato.getId(), plato.getNombre(), plato.getPrecioVenta(), plato.getCostoProduccion()));
+        return mAV;
+    }
+
+    @PostMapping("/platos/actualizar")
+    public String updatePlato(@Valid @ModelAttribute("plato") PlatoDTO platoDTO, BindingResult result, Authentication authentication) {
+        if (result.hasErrors()) {
+            return ViewRouteHelper.RESPONSABLE_PLATO_EDIT;
+        }
+
+        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        Plato datos = new Plato(platoDTO.getNombre(), platoDTO.getPrecioVenta(), platoDTO.getCostoProduccion(), unidadVenta);
+        datos.setId(platoDTO.getId());
+
+        EnumResultadoGuardadoPlato estado = platoService.actualizar(unidadVenta, datos);
+        if (estado == EnumResultadoGuardadoPlato.NOMBRE_DUPLICADO) {
+            result.rejectValue("nombre", "duplicado", "Ya existe un plato con ese nombre");
+            return ViewRouteHelper.RESPONSABLE_PLATO_EDIT;
+        }
+        return "redirect:/responsable/platos";
+    }
+
+    @PostMapping("/platos/baja/{id}")
+    public String deletePlato(@PathVariable("id") long id, Authentication authentication) {
+        UnidadVenta unidadVenta = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        platoService.logicalDelete(unidadVenta, id);
+        return "redirect:/responsable/platos";
     }
 }

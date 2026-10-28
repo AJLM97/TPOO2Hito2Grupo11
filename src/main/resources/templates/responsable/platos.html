@@ -27,9 +27,13 @@
                     <tr th:each="plato : ${platos}">
                         <td th:text="${plato.id}"></td>
                         <td th:text="${plato.nombre}"></td>
-                        <td th:text="${plato.precioVenta}"></td>
-                        <td th:text="${plato.costoProduccion}"></td>
-                        <td class="action-buttons"/>
+                        <td th:text="${#numbers.formatDecimal(plato.precioVenta, 1, 2)}"></td>
+                        <td th:text="${#numbers.formatDecimal(plato.costoProduccion, 1, 2)}"></td>
+                        <td class="action-buttons">
+                            <a th:href="@{/responsable/platos/editar/{id}(id=${plato.id})}" class="btn btn-sm btn-outline-primary">Editar</a>
+                            <form th:action="@{/responsable/platos/baja/{id}(id=${plato.id})}" method="post" class="d-inline" onsubmit="return confirm('¿Quieres darle de baja?')">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Dar de Baja</button>
+                            </form>
                         </td>
                     </tr>
                     </tbody>

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "platos")
@@ -23,6 +24,11 @@ public class Plato {
 
     @Column(name = "costo_produccion", nullable = false)
     private double costoProduccion;
+
+    // El default en la base evita ocultar los platos ya cargados al agregar la columna.
+    @Column(nullable = false)
+    @ColumnDefault("true")
+    private boolean activo = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_unidad_venta", nullable = false)
