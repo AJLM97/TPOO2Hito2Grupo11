@@ -21,6 +21,8 @@ public interface IEmpleadoRepository extends JpaRepository<Empleado, Serializabl
 
     public abstract Optional<Empleado> findByDni(long dni);
 
+    public abstract Optional<Empleado> findByUsuario_EmailAndActivoTrue(String email);
+
     public abstract Optional<Empleado> findByIdAndUnidad(long id, UnidadVenta unidadVenta);
 
     public abstract Optional<Empleado> findById(int id);
