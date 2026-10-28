@@ -8,6 +8,7 @@ public class ViewRouteHelper {
     // ADMINISTRADOR
     public final static String ADMIN_FESTIVALES = "admin/festivales";
     public final static String ADMIN_REGISTRO_FESTIVAL = "admin/festivales-form";
+    public final static String ADMIN_EDITAR_FESTIVAL = "admin/festivales-edit";
     public final static String ADMIN_UNIDADES = "admin/unidades";
     public final static String ADMIN_REGISTRO_RESPONSABLE = "admin/unidades-form";
 
