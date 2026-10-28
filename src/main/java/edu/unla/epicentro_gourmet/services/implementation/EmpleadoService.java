@@ -64,7 +64,7 @@ public class EmpleadoService implements IEmpleadoService {
         String passwordAleatoria = UUID.randomUUID().toString().substring(0, 8);
         Usuario nuevoUsuario = new Usuario(
                 empleado.getDni() + "@epicentro.com",
-                passwordAleatoria,
+                passwordEncoder.encode(passwordAleatoria),
                 EnumRolUsuario.EMPLEADO, true
         );
         empleado.setUsuario(nuevoUsuario);

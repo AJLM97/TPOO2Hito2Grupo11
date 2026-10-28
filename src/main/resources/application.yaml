@@ -1,4 +1,7 @@
 spring:
+  config:
+    import: "file:./.env[.properties]"
+
   application:
     name: epicentro-gourmet
 

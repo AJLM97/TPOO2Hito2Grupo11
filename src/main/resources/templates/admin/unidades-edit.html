@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Editar Unidad de Venta</h2>
+    </div>
+
+    <div class="card form-card">
+        <div class="card-body">
+            <form th:action="@{/admin/festivales/{id}/unidades/actualizar(id=${idFestival})}" th:object="${unidad}" method="post">
+                <input type="hidden" th:field="*{id}">
+                <input type="hidden" th:field="*{tipoUnidadVenta}">
+                <input type="hidden" th:field="*{codigo}">
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                    <ul class="mb-0">
+                        <li th:each="error : ${#fields.errors('*')}" th:text="${error}"></li>
+                    </ul>
+                </div>
+                <div class="mb-3">
+                    <label for="nombreComercial" class="col-form-label">Nombre comercial</label>
+                    <input type="text" class="form-control" id="nombreComercial" th:field="*{nombreComercial}" required placeholder="Ingrese el nombre comercial"/>
+                </div>
+                <div class="mb-3">
+                    <label for="superficie" class="col-form-label">Superficie</label>
+                    <input type="number" class="form-control" id="superficie" th:field="*{superficie}" required placeholder="Ingrese la superficie"/>
+                </div>
+                <div class="mb-3">
+                    <label for="emailResponsable" class="col-form-label">Email del responsable</label>
+                    <input type="email" class="form-control" id="emailResponsable" th:field="*{emailResponsable}" required placeholder="Ingrese el email del responsable"/>
+                </div>
+                <div th:if="${unidad.tipoUnidadVenta == 'FOOD_TRUCK'}" class="mb-3">
+                    <label for="patente" class="col-form-label">Patente</label>
+                    <input type="text" class="form-control" id="patente" th:field="*{patente}" required placeholder="Ingrese la patente"/>
+                </div>
+                <div th:if="${unidad.tipoUnidadVenta == 'FOOD_TRUCK'}" class="mb-3">
+                    <input type="checkbox" class="form-check-input" id="conexionElectrica" th:field="*{conexionElectrica}">
+                    <label for="conexionElectrica" class="col-form-label">Conexión eléctrica</label>
+                </div>
+                <div th:if="${unidad.tipoUnidadVenta == 'PUESTO_DESARMABLE'}" class="mb-3">
+                    <label for="cantidadDeCarpas" class="col-form-label">Cantidad de carpas</label>
+                    <input type="number" class="form-control" min="1" value="1" id="cantidadDeCarpas" required th:field="*{cantidadDeCarpas}" placeholder="Ingrese la cantidad de carpas"/>
+                </div>
+                <div th:if="${unidad.tipoUnidadVenta == 'PUESTO_DESARMABLE'}" class="mb-3">
+                    <label for="tiempoMontajeMinutos" class="col-form-label">Tiempo de montaje (minutos)</label>
+                    <input type="number" class="form-control" min="1" value="1" id="tiempoMontajeMinutos" required th:field="*{tiempoMontajeMinutos}" placeholder="Ingrese el tiempo de montaje en minutos"/>
+                </div>
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-success mr-2">Actualizar</button>
+                    <a th:href="@{/admin/festivales/{id}/unidades(id=${idFestival})}" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>
