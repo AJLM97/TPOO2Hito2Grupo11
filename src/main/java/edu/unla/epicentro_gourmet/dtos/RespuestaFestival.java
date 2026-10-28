@@ -16,4 +16,5 @@ public class RespuestaFestival {
     private EnumTemporadaFestival temporada;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private RespuestaCostos costos;
 }
