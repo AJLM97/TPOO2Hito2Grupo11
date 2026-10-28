@@ -46,4 +46,12 @@ public class UsuarioService implements UserDetailsService {
         }
         return new ArrayList<>(grantedAuthorities);
     }
+
+    public edu.unla.epicentro_gourmet.entities.Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
+
+    public void save(edu.unla.epicentro_gourmet.entities.Usuario usuario) {
+        usuarioRepository.save(usuario);
+    }
 }

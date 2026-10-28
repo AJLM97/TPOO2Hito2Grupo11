@@ -30,6 +30,10 @@
                         <td th:text="${unidad.responsable.email}"></td>
                         <td th:text="${unidad.codigo}"></td>
                         <td class="action-buttons"/>
+                            <a th:href="@{/admin/festivales/{festivalId}/unidades/editar/{id}(id=${unidad.id}, festivalId=${idFestival})}" class="btn btn-sm btn-outline-primary">Editar</a>
+                            <form th:action="@{/admin/festivales/{festivalId}/unidades/baja/{id}(id=${unidad.id}, festivalId=${idFestival})}" method="post" class="d-inline" onsubmit="return confirm('¿Quieres darle de baja?')">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Dar de Baja</button>
+                            </form>
                         </td>
                     </tr>
                     </tbody>
