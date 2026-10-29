@@ -4,17 +4,17 @@ START TRANSACTION;
 INSERT INTO bd_tp_grupal_oo2_grupo11.costos (
     id, costo_superficie, costo_montaje, plus_electricidad, plus_lavaplatos, plus_ayudante, plus_cocinero, plus_antiguedad, sueldo_base, aplicacion_costo_superficie, aplicacion_costo_montaje, aplicacion_plus_electricidad
 ) VALUES
-    (1, 1500.0, 5000.0, 2500.0, 150000.0, 200000.0, 300000.0, 5000.0, 40000.0,
+    (1, 10500.0, 500.0, 2500.0, 150000.0, 200000.0, 300000.0, 5000.0, 40000.0,
      'TODAS', 'PUESTO_DESARMABLE', 'FOOD_TRUCK'),
-    (2, 1200.0, 4500.0, 2000.0, 140000.0, 190000.0, 280000.0, 4500.0, 38000.0,
+    (2, 10200.0, 450.0, 2000.0, 140000.0, 190000.0, 280000.0, 4500.0, 38000.0,
      'TODAS', 'PUESTO_DESARMABLE', 'FOOD_TRUCK'),
-    (3, 1600.0, 5200.0, 2600.0, 155000.0, 205000.0, 310000.0, 5200.0, 42000.0,
+    (3, 10600.0, 520.0, 2600.0, 155000.0, 205000.0, 310000.0, 5200.0, 42000.0,
      'TODAS', 'PUESTO_DESARMABLE', 'FOOD_TRUCK'),
-    (4, 1400.0, 4800.0, 2400.0, 145000.0, 195000.0, 290000.0, 4800.0, 39000.0,
+    (4, 10400.0, 480.0, 2400.0, 145000.0, 195000.0, 290000.0, 4800.0, 39000.0,
      'TODAS', 'PUESTO_DESARMABLE', 'FOOD_TRUCK'),
-    (5, 1800.0, 5500.0, 2800.0, 160000.0, 210000.0, 320000.0, 5500.0, 45000.0,
+    (5, 10800.0, 550.0, 2800.0, 160000.0, 210000.0, 320000.0, 5500.0, 45000.0,
      'TODAS', 'PUESTO_DESARMABLE', 'FOOD_TRUCK'),
-    (6, 2000.0, 6000.0, 3000.0, 170000.0, 220000.0, 340000.0, 6000.0, 48000.0,
+    (6, 20000.0, 600.0, 3000.0, 170000.0, 220000.0, 340000.0, 6000.0, 48000.0,
      'TODAS', 'PUESTO_DESARMABLE', 'FOOD_TRUCK');
 
 -- Festivales
