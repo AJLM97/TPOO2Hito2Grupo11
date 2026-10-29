@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Punto de equilibrio</h2>
+    </div>
+
+    <div th:if="${equilibrio == null}" class="alert alert-warning">
+        El festival de la unidad no tiene costos configurados, por lo que no se puede calcular el punto de equilibrio.
+    </div>
+
+    <div th:if="${equilibrio != null}">
+        <div class="alert alert-success" th:if="${equilibrio.equilibrioAlcanzado}">
+            La unidad ya cubrió el canon y los sueldos: está ganando.
+        </div>
+        <div class="alert alert-warning" th:unless="${equilibrio.equilibrioAlcanzado}">
+            La unidad todavía no cubre el canon y los sueldos.
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <p class="mb-1"><strong th:text="${equilibrio.nombreUnidad}"></strong>
+                    (<span th:text="${equilibrio.codigoUnidad}"></span>)</p>
+                <p class="text-muted">Festival: <span th:text="${equilibrio.nombreFestival}"></span> -
+                    <span th:switch="${equilibrio.estadoFestival.name()}">
+                        <span th:case="'EN_CURSO'">en curso</span>
+                        <span th:case="'PROXIMO'">todavía no comenzó</span>
+                        <span th:case="*">finalizado</span>
+                    </span>
+                </p>
+
+                <div class="progress mb-4">
+                    <div class="progress-bar" role="progressbar"
+                         th:classappend="${equilibrio.equilibrioAlcanzado} ? 'bg-success' : 'bg-warning'"
+                         th:style="${'width: ' + #numbers.formatDecimal(equilibrio.porcentajeCubierto > 100 ? 100 : equilibrio.porcentajeCubierto, 1, 0) + '%'}"
+                         th:text="${#numbers.formatDecimal(equilibrio.porcentajeCubierto, 1, 1) + '%'}"></div>
+                </div>
+
+                <table class="table table-striped mb-0">
+                    <tbody>
+                    <tr>
+                        <td>Canon</td>
+                        <td class="text-right" th:text="${#numbers.formatDecimal(equilibrio.canon, 1, 2)}"></td>
+                    </tr>
+                    <tr>
+                        <td>Sueldos del personal</td>
+                        <td class="text-right" th:text="${#numbers.formatDecimal(equilibrio.sueldos, 1, 2)}"></td>
+                    </tr>
+                    <tr>
+                        <th>Costos a cubrir</th>
+                        <th class="text-right" th:text="${#numbers.formatDecimal(equilibrio.costosFijos, 1, 2)}"></th>
+                    </tr>
+                    <tr>
+                        <td>Ventas (pedidos cerrados)</td>
+                        <td class="text-right" th:text="${#numbers.formatDecimal(equilibrio.ventas, 1, 2)}"></td>
+                    </tr>
+                    <tr>
+                        <td>Costo de los platos</td>
+                        <td class="text-right" th:text="${'-' + #numbers.formatDecimal(equilibrio.costoPlatos, 1, 2)}"></td>
+                    </tr>
+                    <tr>
+                        <th>Ganancia bruta</th>
+                        <th class="text-right" th:text="${#numbers.formatDecimal(equilibrio.gananciaBruta, 1, 2)}"></th>
+                    </tr>
+                    <tr th:unless="${equilibrio.equilibrioAlcanzado}">
+                        <td>Falta de ganancia para cubrir los costos</td>
+                        <td class="text-right" th:text="${#numbers.formatDecimal(equilibrio.gananciaFaltante, 1, 2)}"></td>
+                    </tr>
+                    <tr th:if="${equilibrio.ventasNecesarias != null}">
+                        <td>Ventas necesarias con el margen actual</td>
+                        <td class="text-right" th:text="${#numbers.formatDecimal(equilibrio.ventasNecesarias, 1, 2)}"></td>
+                    </tr>
+                    <tr th:if="${equilibrio.ventasFaltantes != null and !equilibrio.equilibrioAlcanzado}">
+                        <td>Falta vender</td>
+                        <td class="text-right" th:text="${#numbers.formatDecimal(equilibrio.ventasFaltantes, 1, 2)}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="text-muted small mt-3 mb-0">Los costos a cubrir se pagan con la ganancia bruta (ventas menos
+                    costo de los platos). Solo cuentan los pedidos cerrados. Las ventas necesarias se estiman con el
+                    margen de lo vendido hasta ahora.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>
