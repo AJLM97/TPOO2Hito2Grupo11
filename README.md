@@ -78,7 +78,7 @@ Proyecto desarrollado para la asignatura [Orientación a Objetos 2] - [2026 - Se
 
 | Caso de uso | Funcionalidad | Responsable |
 |---|---|---|
-| `CUAuditoriaPedidosThomasVogt` | Consulta y auditoría de pedidos de una unidad. | Thomas Gebhard Vogt ([@Thomy98](https://github.com/Thomy98)) |
-| `CUPuntoEquilibrioThomasVogt` | Cálculo del punto de equilibrio de una unidad de venta. | Thomas Gebhard Vogt ([@Thomy98](https://github.com/Thomy98)) |
+| `CUAuditoriaPedidosThomasVogt` | Búsqueda de los pedidos de la unidad por rango de fechas, estado (abierto o cerrado) y plato, con el total y la cantidad de ítems de cada uno. Permite revisar las ventas de un día y detectar pedidos abiertos | Thomas Gebhard Vogt ([@Thomy98](https://github.com/Thomy98)) |
+| `CUPuntoEquilibrioThomasVogt` | Indica si la unidad ya cubrió el canon y los sueldos con su ganancia bruta (ventas cerradas menos costo de los platos), con el porcentaje cubierto, lo que falta ganar y una estimación de lo que falta vender | Thomas Gebhard Vogt ([@Thomy98](https://github.com/Thomy98)) |
 | `CUConsultarPlatosMasRentablesAlejandroLedesma` | Lista platos ordenados por rentabilidad en una unidad de venta. | Alejandro Javier Ledesma Miño ([@AJLM97](https://github.com/AJLM97)) |
 | `CURankingConcurrenciaPorTemporadaAlejandroLedesma` | Ranking de festivales por temporada según pedidos cerrados, usados como estimación de concurrencia; muestra también el año del festival. | Alejandro Javier Ledesma Miño ([@AJLM97](https://github.com/AJLM97)) |
