@@ -18,44 +18,48 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item" sec:authorize="hasAuthority('RESPONSABLE')">
-                    <a class="nav-link" th:href="@{/responsable/pedidos}">Auditoría</a>
-                </li>
                 <li class="nav-item" sec:authorize="hasAuthority('EMPLEADO')">
                     <a class="nav-link" th:href="@{/empleado/pedidos}">Pedidos</a>
                 </li>
+
                 <li class="nav-item" sec:authorize="hasAuthority('RESPONSABLE')">
-                    <a class="nav-link" th:href="@{/responsable/reportes/plato-estrella}">Plato estrella</a>
+                    <a class="nav-link" th:href="@{/responsable/pedidos}">Auditoría</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasAuthority('RESPONSABLE')">
-                    <a class="nav-link" th:href="@{/responsable/empleados}">Empleados</a>
+                <li class="nav-item dropdown" sec:authorize="hasAuthority('RESPONSABLE')">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                        Gestión
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:href="@{/responsable/empleados}">Empleados</a>
+                        <a class="dropdown-item" th:href="@{/responsable/platos}">Platos</a>
+                        <a class="dropdown-item" th:href="@{/responsable/liquidacion}">Liquidación</a>
+                        <a class="dropdown-item" th:href="@{/responsable/canon}">Canon</a>
+                    </div>
                 </li>
-                <li class="nav-item" sec:authorize="hasAuthority('RESPONSABLE')">
-                    <a class="nav-link" th:href="@{/responsable/liquidacion}">Liquidación</a>
+                <li class="nav-item dropdown" sec:authorize="hasAuthority('RESPONSABLE')">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                        Reportes
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:href="@{/responsable/reportes/plato-estrella}">Plato estrella</a>
+                        <a class="dropdown-item" th:href="@{/responsable/reportes/platos-rentables}">Platos más rentables</a>
+                        <a class="dropdown-item" th:href="@{/responsable/reportes/recaudacion}">Recaudación</a>
+                        <a class="dropdown-item" th:href="@{/responsable/reportes/rentabilidad}">Rentabilidad</a>
+                        <a class="dropdown-item" th:href="@{/responsable/reportes/punto-equilibrio}">Equilibrio</a>
+                    </div>
                 </li>
-                <li class="nav-item" sec:authorize="hasAuthority('RESPONSABLE')">
-                    <a class="nav-link" th:href="@{/responsable/platos}">Platos</a>
-                </li>
-                <li class="nav-item" sec:authorize="hasAuthority('RESPONSABLE')">
-                    <a class="nav-link" th:href="@{/responsable/canon}">Canon</a>
-                </li>
+
                 <li class="nav-item" sec:authorize="hasAuthority('ADMINISTRADOR')">
                     <a class="nav-link" th:href="@{/admin/festivales}">Festivales</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasAuthority('ADMINISTRADOR')">
-                    <a class="nav-link" th:href="@{/admin/ranking-recaudacion}">Ranking de recaudación</a>
-                </li>
-                <li class="nav-item" sec:authorize="hasAuthority('ADMINISTRADOR')">
-                    <a class="nav-link" th:href="@{/admin/mayores-canon}">Mayores cánones</a>
-                </li>
-                <li class="nav-item" sec:authorize="hasAuthority('RESPONSABLE')">
-                    <a class="nav-link" th:href="@{/responsable/reportes/recaudacion}">Recaudación</a>
-                </li>
-                <li class="nav-item" sec:authorize="hasAuthority('RESPONSABLE')">
-                    <a class="nav-link" th:href="@{/responsable/reportes/rentabilidad}">Rentabilidad</a>
-                </li>
-                <li class="nav-item" sec:authorize="hasAuthority('RESPONSABLE')">
-                    <a class="nav-link" th:href="@{/responsable/reportes/punto-equilibrio}">Equilibrio</a>
+                <li class="nav-item dropdown" sec:authorize="hasAuthority('ADMINISTRADOR')">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                        Reportes
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:href="@{/admin/ranking-recaudacion}">Ranking de recaudación</a>
+                        <a class="dropdown-item" th:href="@{/admin/mayores-canon}">Mayores cánones</a>
+                    </div>
                 </li>
             </ul>
             <ul class="navbar-nav">

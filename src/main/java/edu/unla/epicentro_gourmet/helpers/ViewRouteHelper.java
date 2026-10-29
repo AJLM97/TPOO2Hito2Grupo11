@@ -26,6 +26,7 @@ public class ViewRouteHelper {
     public final static String RESPONSABLE_REPORTE_RECAUDACION = "responsable/reporte-recaudacion";
     public final static String RESPONSABLE_PLATO_FORM = "responsable/platos-form";
     public final static String RESPONSABLE_REPORTE_PLATO_ESTRELLA = "responsable/reporte-plato-estrella";
+    public final static String RESPONSABLE_PLATOS_RENTABLES = "responsable/reporte-platos-rentables";
     public final static String RESPONSABLE_PLATO_EDIT = "responsable/platos-edit";
     public final static String RESPONSABLE_CANON = "responsable/canon";
 
