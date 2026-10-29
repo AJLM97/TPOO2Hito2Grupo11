@@ -70,6 +70,48 @@ class PruebasAbmFestivalesVistasTests {
     }
 
     @Test
+    void testHomeMuestraFestivalesEnCardsConSusAcciones() throws Exception {
+        festivalRepository.save(festival("Festival de Prueba", LocalDate.now().plusDays(1)));
+
+        mockMvc.perform(get("/home"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("home/festivales"))
+                .andExpect(content().string(containsString("card access-card")))
+                .andExpect(content().string(containsString("Festival de Prueba")))
+                .andExpect(content().string(containsString("Ver Unidades")))
+                .andExpect(content().string(containsString("Registrar mi Unidad")));
+    }
+
+    @Test
+    void testUnidadesMuestraElNombreDelFestivalVigente() throws Exception {
+        Festival festivalVigente = festival("Festival Vigente", LocalDate.now().plusDays(1));
+        festivalVigente = festivalRepository.save(festivalVigente);
+
+        mockMvc.perform(get("/festival/" + festivalVigente.getId()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("home/unidades"))
+                .andExpect(model().attribute("nombreFestival", "Festival Vigente"))
+                .andExpect(content().string(containsString("Unidades de Venta - Festival Vigente")));
+    }
+
+    @Test
+    void testUnidadesRedirigeAlHomeSiElFestivalYaConcluyo() throws Exception {
+        Festival festivalConcluido = festival("Festival Concluido", LocalDate.now().minusDays(3));
+        festivalConcluido = festivalRepository.save(festivalConcluido);
+
+        mockMvc.perform(get("/festival/" + festivalConcluido.getId()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/home"));
+    }
+
+    @Test
+    void testUnidadesRedirigeAlHomeSiElFestivalNoExiste() throws Exception {
+        mockMvc.perform(get("/festival/999999"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/home"));
+    }
+
+    @Test
     void testFormularioDeAltaSeMuestraConSusCampos() throws Exception {
         mockMvc.perform(get("/admin/festivales/nuevo"))
                 .andExpect(status().isOk())

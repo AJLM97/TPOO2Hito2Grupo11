@@ -25,4 +25,6 @@ public interface IFestivalService {
     void eliminar(Long id);
 
     List<RespuestaUnidadVenta> listarUnidades(Long festivalId);
+
+    List<Festival> listarFestivalesNoConcluidos();
 }

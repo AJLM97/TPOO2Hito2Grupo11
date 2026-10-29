@@ -66,7 +66,7 @@ public class RentabilidadService implements IRentabilidadService {
         }
         UnidadVenta real = (UnidadVenta) Hibernate.unproxy(unidad);
         Festival festival = (Festival) Hibernate.unproxy(real.getFestival());
-        if (desde.isBefore(festival.getFechInicio()) || hasta.isAfter(festival.getFechaFin())) {
+        if (desde.isBefore(festival.getFechaInicio()) || hasta.isAfter(festival.getFechaFin())) {
             return EnumResultadoRangoFechas.FUERA_DEL_FESTIVAL;
         }
         return EnumResultadoRangoFechas.OK;

@@ -21,7 +21,6 @@
                         <th>DNI</th>
                         <th>Fecha Ingreso</th>
                         <th>Puesto</th>
-                        <th>Sueldo Base</th>
                         <th>Acciones</th>
                     </tr>
                     </thead>
@@ -39,7 +38,6 @@
                                         : 'Cajero'}">
                             </div>
                         </td>
-                        <td th:text="${#numbers.formatDecimal(empleado.sueldoBase, 1, 2)}"></td>
                         <td class="action-buttons"/>
                             <a th:href="@{/responsable/empleados/editar/{id}(id=${empleado.id})}" class="btn btn-sm btn-outline-primary">Editar</a>
                             <form th:action="@{/responsable/empleados/baja/{id}(id=${empleado.id})}" method="post" class="d-inline" onsubmit="return confirm('¿Quieres darle de baja?')">

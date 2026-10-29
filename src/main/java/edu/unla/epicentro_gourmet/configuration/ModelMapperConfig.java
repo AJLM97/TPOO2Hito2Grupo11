@@ -20,13 +20,13 @@ public class ModelMapperConfig {
         festivalTypeMap.addMappings(mapper -> mapper.skip(Festival::setId));
         festivalTypeMap.addMappings(mapper -> mapper.map(
                 SolicitudFestival::getFechaInicio,
-                Festival::setFechInicio
+                Festival::setFechaInicio
         ));
 
         TypeMap<Festival, RespuestaFestival> respuestaTypeMap =
                 modelMapper.createTypeMap(Festival.class, RespuestaFestival.class);
         respuestaTypeMap.addMappings(mapper -> mapper.map(
-                Festival::getFechInicio,
+                Festival::getFechaInicio,
                 RespuestaFestival::setFechaInicio
         ));
 

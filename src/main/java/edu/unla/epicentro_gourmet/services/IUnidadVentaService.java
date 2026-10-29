@@ -18,7 +18,7 @@ public interface IUnidadVentaService {
 
     public List<UnidadVenta> getUnidadesDeVentaFromFestival(long idFestival);
 
-    public void altaConResponsable(UnidadVenta unidadVenta, String emailResponsable);
+    public void altaConResponsable(UnidadVenta unidadVenta, String emailResponsable, String passwordResponsable);
 
     public Optional<UnidadVenta> findByIdWithResponsable(long id);
 

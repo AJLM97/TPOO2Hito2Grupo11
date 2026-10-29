@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+    <nav th:replace="~{layout :: navbar}"></nav>
+
+    <main class="container py-4">
+        <div class="page-header d-flex justify-content-between align-items-center">
+            <h2>Bienvenido a Epicentro Gourmet, hecha un vistazo a nuestros festivales</h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4 mb-4" th:each="festival : ${festivales}">
+                <div class="card access-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title festival-card-title" th:text="${festival.nombre}"
+                            th:title="${festival.nombre}"></h5>
+                        <p class="card-text text-muted"
+                            th:text="${#strings.capitalize(#strings.toLowerCase(festival.temporada.name()))}"></p>
+                        <p class="card-text">
+                            <span th:text="|Del ${festival.fechaInicio} al ${festival.fechaFin}|"></span>
+                        </p>
+                        <div class="d-grid gap-2">
+                            <a th:href="@{/festival/{id}(id=${festival.id})}"
+                                class="btn btn-sm btn-outline-primary w-100 mb-2">Ver Unidades</a>
+                            <a th:href="@{/festival/{id}/registrar(id=${festival.id})}"
+                                class="btn btn-sm btn-outline-primary w-100">Registrar mi Unidad</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${festivales == null or festivales.isEmpty()}" class="col-12 text-center text-muted py-4">
+                No hay festivales disponibles en este momento. Por favor, vuelva más tarde.
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{layout :: footer}"></footer>
+    <div th:replace="~{layout :: scripts}"></div>
+</body>
+
+</html>

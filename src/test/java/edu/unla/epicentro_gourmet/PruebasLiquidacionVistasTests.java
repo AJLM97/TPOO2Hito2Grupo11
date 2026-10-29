@@ -95,15 +95,15 @@ class PruebasLiquidacionVistasTests {
         UnidadVenta ajena = unidadVentaRepository.save(new PuestoDesarmable("Puesto ajeno", "PD-0002", 10.0,
                 unidad.getFestival(), 1, 30, null));
         empleadoRepository.save(new Cocinero("Lucia", "Fernandez", 30123456, LocalDate.of(1995, 3, 12),
-                LocalDate.of(2016, 1, 1), 1, unidad, EnumCategoriaCocinero.COCINERO, null));
+                LocalDate.of(2016, 1, 1), unidad, EnumCategoriaCocinero.COCINERO, null));
         empleadoRepository.save(new Cajero("Mateo", "Gomez", 28987654, LocalDate.of(1993, 7, 20),
-                LocalDate.of(2023, 11, 1), 1, unidad, EnumTurnoCajero.MANANA, null));
+                LocalDate.of(2023, 11, 1), unidad, EnumTurnoCajero.MANANA, null));
         Cajero dadoDeBaja = new Cajero("Baja", "Dada", 20111222, LocalDate.of(1990, 1, 1),
-                LocalDate.of(2020, 1, 1), 1, unidad, EnumTurnoCajero.NOCHE, null);
+                LocalDate.of(2020, 1, 1), unidad, EnumTurnoCajero.NOCHE, null);
         dadoDeBaja.setActivo(false);
         empleadoRepository.save(dadoDeBaja);
         empleadoRepository.save(new Cajero("Otro", "Equipo", 20333444, LocalDate.of(1990, 1, 1),
-                LocalDate.of(2020, 1, 1), 1, ajena, EnumTurnoCajero.TARDE, null));
+                LocalDate.of(2020, 1, 1), ajena, EnumTurnoCajero.TARDE, null));
 
         mockMvc.perform(get("/responsable/liquidacion"))
                 .andExpect(status().isOk())
