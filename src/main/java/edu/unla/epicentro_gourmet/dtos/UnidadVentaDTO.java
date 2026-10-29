@@ -1,5 +1,7 @@
 package edu.unla.epicentro_gourmet.dtos;
 
+import java.util.UUID;
+
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +17,7 @@ public class UnidadVentaDTO {
     private double superficie;
     @NotBlank(message = "El email del responsable es obligatorio")
     private String emailResponsable;
-    @NotBlank(message = "El código es obligatorio")
-    private String codigo;
+    private String codigo = UUID.randomUUID().toString().substring(0, 10);
     private String tipoUnidadVenta;
 
     private String patente;
@@ -24,8 +25,11 @@ public class UnidadVentaDTO {
 
     private long cantidadDeCarpas;
     private long tiempoMontajeMinutos;
+
+    private String passwordResponsable;
+    private String repetirPassword;
     
-    public UnidadVentaDTO(long id, String nombreComercial, double superficie, String emailResponsable, String codigo, String tipoUnidadVenta, String patente, boolean conexionElectrica, long cantidadDeCarpas, long tiempoMontajeMinutos) {
+    public UnidadVentaDTO(long id, String nombreComercial, double superficie, String emailResponsable, String codigo, String tipoUnidadVenta, String patente, boolean conexionElectrica, long cantidadDeCarpas, long tiempoMontajeMinutos, String passwordResponsable, String repetirPassword) {
         this.id = id;
         this.nombreComercial = nombreComercial;
         this.superficie = superficie;
@@ -36,6 +40,8 @@ public class UnidadVentaDTO {
         this.conexionElectrica = conexionElectrica;
         this.cantidadDeCarpas = cantidadDeCarpas;
         this.tiempoMontajeMinutos = tiempoMontajeMinutos;
+        this.passwordResponsable = passwordResponsable;
+        this.repetirPassword = repetirPassword;
     }
 
     @AssertTrue(message = "La patente no tiene un formato válido de Argentina")
@@ -52,5 +58,15 @@ public class UnidadVentaDTO {
     @AssertTrue(message = "El tiempo de montaje debe ser mayor que cero")
     public boolean isTiempoMontajeValido() {
         return !"PUESTO_DESARMABLE".equalsIgnoreCase(tipoUnidadVenta) || tiempoMontajeMinutos > 0;
+    }
+
+    @AssertTrue(message = "Las contraseñas no pueden estar vacías")
+    public boolean isPasswordVacio() {
+        return passwordResponsable != null && repetirPassword != null;
+    }
+
+    @AssertTrue(message = "Las contraseñas no coinciden")
+    public boolean isPasswordCoinciden() {
+        return passwordResponsable != null && passwordResponsable.equals(repetirPassword);
     }
 }

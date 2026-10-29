@@ -53,7 +53,7 @@ public class PuntoEquilibrioService implements IPuntoEquilibrioService {
     }
 
     private EnumEstadoFestival estadoDe(Festival festival, LocalDate hoy) {
-        if (hoy.isBefore(festival.getFechInicio())) {
+        if (hoy.isBefore(festival.getFechaInicio())) {
             return EnumEstadoFestival.PROXIMO;
         }
         if (hoy.isAfter(festival.getFechaFin())) {

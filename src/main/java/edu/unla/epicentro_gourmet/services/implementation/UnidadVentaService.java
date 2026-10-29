@@ -63,9 +63,7 @@ public class UnidadVentaService implements IUnidadVentaService {
     }
 
     @Override
-    public void altaConResponsable(UnidadVenta unidadVenta, String emailResponsable) {
-        String passwordAleatoria = UUID.randomUUID().toString().substring(0, 8);
-
+    public void altaConResponsable(UnidadVenta unidadVenta, String emailResponsable, String passwordResponsable) {
         Usuario usuarioEncontrado = usuarioService.findByEmail(emailResponsable);
         Usuario nuevoUsuario;
 
@@ -75,14 +73,14 @@ public class UnidadVentaService implements IUnidadVentaService {
         } else {
             nuevoUsuario = new Usuario(
                 emailResponsable,
-                passwordEncoder.encode(passwordAleatoria),
+                passwordEncoder.encode(passwordResponsable),
                 EnumRolUsuario.RESPONSABLE, true
             );
         }
         usuarioService.save(nuevoUsuario);
         unidadVenta.setResponsable(nuevoUsuario);
 
-        enviarCorreoConCredenciales(emailResponsable, passwordAleatoria);
+        enviarCorreoConCredenciales(emailResponsable, passwordResponsable);
         save(unidadVenta);
     }
 
@@ -131,7 +129,7 @@ public class UnidadVentaService implements IUnidadVentaService {
         mensaje.setSubject("Bienvenido a Epicentro Gourmet - Tus Credenciales");
         mensaje.setText("Hola responsable,\n\nTu cuenta de responsable de una unidad de venta ha sido creada con éxito.\n" +
                 "Correo de acceso: " + emailResponsable + "\n" +
-                "Contraseña temporal: " + password + "\n\nPor seguridad, recordá cambiarla en tu primer ingreso.");
+                "Contraseña: " + password);
         mailSender.send(mensaje);
     }
 }

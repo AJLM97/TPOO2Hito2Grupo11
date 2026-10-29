@@ -92,12 +92,12 @@ public class LiquidacionService implements ILiquidacionService {
 
     // Antigüedad en años completos hasta el inicio del festival.
     private long aniosDeAntiguedad(Empleado empleado, Festival festival) {
-        return Math.max(0, Period.between(empleado.getFechaIngreso(), festival.getFechInicio()).getYears());
+        return Math.max(0, Period.between(empleado.getFechaIngreso(), festival.getFechaInicio()).getYears());
     }
 
     // Los días de inicio y de fin cuentan como días del festival.
     private long diasDelFestival(Festival festival) {
-        return ChronoUnit.DAYS.between(festival.getFechInicio(), festival.getFechaFin()) + 1;
+        return ChronoUnit.DAYS.between(festival.getFechaInicio(), festival.getFechaFin()) + 1;
     }
 
     private double porcentajeSegunDuracion(long dias) {

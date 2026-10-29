@@ -155,7 +155,6 @@ public class ResponsableController {
         empleadoService.findById(empleadoDTO.getId()).ifPresent(empleadoEncontrado -> {
             empleadoEncontrado.setNombre(empleadoDTO.getNombre());
             empleadoEncontrado.setApellido(empleadoDTO.getApellido());
-            empleadoEncontrado.setSueldoBase(empleadoDTO.getSueldoBase());
             if (empleadoEncontrado instanceof Cajero cajeroExistente) {
                 cajeroExistente.setTurnoTrabajo(EnumTurnoCajero.valueOf(empleadoDTO.getTurnoTrabajo()));
             } else if (empleadoEncontrado instanceof Cocinero cocineroExistente) {

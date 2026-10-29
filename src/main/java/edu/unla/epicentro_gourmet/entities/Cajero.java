@@ -18,8 +18,8 @@ public class Cajero extends Empleado{
     private EnumTurnoCajero turnoTrabajo;
 
     public Cajero(String nombre, String apellido, long dni, LocalDate fechaNacimiento, LocalDate fechaIngreso,
-                  double sueldoBase, UnidadVenta unidad, EnumTurnoCajero turnoTrabajo, Usuario usuario) {
-        super(nombre, apellido, dni, fechaNacimiento, fechaIngreso, sueldoBase, unidad, usuario);
+                  UnidadVenta unidad, EnumTurnoCajero turnoTrabajo, Usuario usuario) {
+        super(nombre, apellido, dni, fechaNacimiento, fechaIngreso, unidad, usuario);
         this.turnoTrabajo = turnoTrabajo;
     }
 }

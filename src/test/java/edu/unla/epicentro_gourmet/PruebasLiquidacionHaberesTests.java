@@ -40,11 +40,11 @@ class PruebasLiquidacionHaberesTests {
     }
 
     private Cocinero cocinero(UnidadVenta unidad, EnumCategoriaCocinero categoria, LocalDate ingreso) {
-        return new Cocinero("Lucia", "Fernandez", 30123456, LocalDate.of(1995, 3, 12), ingreso, 1, unidad, categoria, null);
+        return new Cocinero("Lucia", "Fernandez", 30123456, LocalDate.of(1995, 3, 12), ingreso, unidad, categoria, null);
     }
 
     private Cajero cajero(UnidadVenta unidad, LocalDate ingreso) {
-        return new Cajero("Mateo", "Gomez", 28987654, LocalDate.of(1993, 7, 20), ingreso, 1, unidad,
+        return new Cajero("Mateo", "Gomez", 28987654, LocalDate.of(1993, 7, 20), ingreso, unidad,
                 EnumTurnoCajero.MANANA, null);
     }
 
@@ -134,7 +134,6 @@ class PruebasLiquidacionHaberesTests {
     void testElSueldoBaseDelEmpleadoNoReemplazaAlDelFestival() {
         UnidadVenta unidad = unidadEn(festivalDeDias(20));
         Cajero cajero = cajero(unidad, INGRESO_ANTIGUO);
-        cajero.setSueldoBase(999999);
 
         assertEquals(100000.0, liquidacionService.liquidar(cajero).orElseThrow().getSueldoBase());
     }

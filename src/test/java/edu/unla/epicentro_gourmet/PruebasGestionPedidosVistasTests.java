@@ -94,7 +94,7 @@ class PruebasGestionPedidosVistasTests {
 
         Usuario usuarioCajero = new Usuario(EMAIL_CAJERO, "clave", EnumRolUsuario.EMPLEADO, true);
         empleadoRepository.save(new Cajero("Mateo", "Gomez", 28987654L, LocalDate.of(1993, 7, 20),
-                LocalDate.of(2019, 6, 15), 100000, unidad, EnumTurnoCajero.MANANA, usuarioCajero));
+                LocalDate.of(2019, 6, 15), unidad, EnumTurnoCajero.MANANA, usuarioCajero));
 
         empanada = platoRepository.save(new Plato("Empanada", 3500, 1200, unidad));
         limonada = platoRepository.save(new Plato("Limonada", 2800, 700, unidad));
@@ -396,7 +396,7 @@ class PruebasGestionPedidosVistasTests {
     void testUnCocineroNoPuedeGestionarPedidos() throws Exception {
         Usuario usuario = new Usuario(EMAIL_COCINERO, "clave", EnumRolUsuario.EMPLEADO, true);
         empleadoRepository.save(new Cocinero("Lucia", "Fernandez", 30123456L, LocalDate.of(1995, 3, 12),
-                LocalDate.of(2020, 2, 1), 100000, unidad, EnumCategoriaCocinero.COCINERO, usuario));
+                LocalDate.of(2020, 2, 1), unidad, EnumCategoriaCocinero.COCINERO, usuario));
 
         mockMvc.perform(get("/empleado/pedidos")).andExpect(status().isForbidden());
         mockMvc.perform(post("/empleado/pedidos/abrir")).andExpect(status().isForbidden());

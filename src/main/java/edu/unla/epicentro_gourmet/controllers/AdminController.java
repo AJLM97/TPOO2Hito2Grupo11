@@ -22,6 +22,7 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -120,7 +121,13 @@ public class AdminController {
     @GetMapping("/festivales/{id}/unidades/nuevo")
     public ModelAndView showFormUnidadDeVenta(@PathVariable("id") long idFestival) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.ADMIN_UNIDADES_FORM);
-        mAV.addObject("unidad", new UnidadVentaDTO());
+        
+        String passwordAleatoria = UUID.randomUUID().toString().substring(0, 8);
+        UnidadVentaDTO unidadDTO = new UnidadVentaDTO();
+        unidadDTO.setPasswordResponsable(passwordAleatoria);
+        unidadDTO.setRepetirPassword(passwordAleatoria);
+
+        mAV.addObject("unidad", unidadDTO);
         mAV.addObject("idFestival", idFestival);
         return mAV;
     }
@@ -132,6 +139,7 @@ public class AdminController {
         }
 
         String emailResponsable = unidadDTO.getEmailResponsable();
+        String passwordResponsable = unidadDTO.getPasswordResponsable();
         Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(emailResponsable);
 
         if (unidadVentaOptional.isPresent()) {
@@ -152,7 +160,7 @@ public class AdminController {
                 null
             );
 
-            unidadVentaService.altaConResponsable(puesto, emailResponsable);
+            unidadVentaService.altaConResponsable(puesto, emailResponsable, passwordResponsable);
 
         } else if ("FOOD_TRUCK".equalsIgnoreCase(unidadDTO.getTipoUnidadVenta())) {
             FoodTruck foodTruck = new FoodTruck(
@@ -165,7 +173,7 @@ public class AdminController {
                 null
             );
 
-            unidadVentaService.altaConResponsable(foodTruck, emailResponsable);
+            unidadVentaService.altaConResponsable(foodTruck, emailResponsable, passwordResponsable);
         }
 
         return "redirect:/admin/festivales/" + idFestival + "/unidades";

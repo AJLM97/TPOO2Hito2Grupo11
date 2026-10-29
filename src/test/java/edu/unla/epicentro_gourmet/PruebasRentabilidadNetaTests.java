@@ -57,7 +57,7 @@ class PruebasRentabilidadNetaTests {
     private void conUnCocinero() {
         when(empleadoRepository.findByUnidadAndActivoTrue(unidad)).thenReturn(List.of(
                 new Cocinero("Lucia", "Fernandez", 30123456, LocalDate.of(1995, 3, 12), LocalDate.of(2016, 1, 1),
-                        1, unidad, EnumCategoriaCocinero.COCINERO, null)));
+                        unidad, EnumCategoriaCocinero.COCINERO, null)));
     }
 
     @Test

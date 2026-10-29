@@ -91,7 +91,7 @@ class PruebasPuntoEquilibrioVistasTests {
         unidad = unidadVentaRepository.save(new PuestoDesarmable("Puesto propio", "PD-0001", 20.0, festival, 2, 45, responsable));
         empanada = platoRepository.save(new Plato("Empanada", 3500, 1200, unidad));
         empleadoRepository.save(new Cocinero("Lucia", "Fernandez", 30123456, LocalDate.of(1995, 3, 12),
-                LocalDate.of(2016, 1, 1), 1, unidad, EnumCategoriaCocinero.COCINERO, null));
+                LocalDate.of(2016, 1, 1), unidad, EnumCategoriaCocinero.COCINERO, null));
     }
 
     private void guardarPedidoCerrado(int cantidad) {

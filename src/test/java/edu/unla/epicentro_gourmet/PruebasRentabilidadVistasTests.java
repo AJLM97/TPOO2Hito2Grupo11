@@ -90,7 +90,7 @@ class PruebasRentabilidadVistasTests {
         unidadAjena = unidadVentaRepository.save(new PuestoDesarmable("Puesto ajeno", "PD-0002", 10.0, festival, 1, 30, null));
         empanada = platoRepository.save(new Plato("Empanada", 3500, 1200, unidad));
         empleadoRepository.save(new Cocinero("Lucia", "Fernandez", 30123456, LocalDate.of(1995, 3, 12),
-                LocalDate.of(2016, 1, 1), 1, unidad, EnumCategoriaCocinero.COCINERO, null));
+                LocalDate.of(2016, 1, 1), unidad, EnumCategoriaCocinero.COCINERO, null));
     }
 
     private void guardarPedido(UnidadVenta unidadDelPedido, boolean cerrado, int cantidad, LocalDateTime fecha) {
