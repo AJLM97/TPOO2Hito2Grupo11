@@ -22,6 +22,8 @@ public interface IEmpleadoService {
 
     public Optional<Empleado> findByDni(long dni);
 
+    public Optional<Empleado> findActivoByEmail(String email);
+
     public Optional<Empleado> findByIdAndUnidadVenta(long id, UnidadVenta unidadVenta);
 
     EnumResultadoAltaEmpleado altaOReactivar(Empleado candidato, String emailPersonal);

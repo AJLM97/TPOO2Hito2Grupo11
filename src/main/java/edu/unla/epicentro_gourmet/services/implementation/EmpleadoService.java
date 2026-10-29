@@ -84,6 +84,11 @@ public class EmpleadoService implements IEmpleadoService {
     }
 
     @Override
+    public Optional<Empleado> findActivoByEmail(String email) {
+        return empleadoRepository.findByUsuario_EmailAndActivoTrue(email);
+    }
+
+    @Override
     @Transactional
     public EnumResultadoAltaEmpleado altaOReactivar(
             Empleado empleado, String emailPersonal) {
