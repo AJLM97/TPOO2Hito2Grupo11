@@ -18,6 +18,7 @@ import edu.unla.epicentro_gourmet.services.EnumResultadoAltaEmpleado;
 import edu.unla.epicentro_gourmet.services.IEmpleadoService;
 import edu.unla.epicentro_gourmet.services.IFestivalService;
 import edu.unla.epicentro_gourmet.services.IReporteVentaService;
+import edu.unla.epicentro_gourmet.services.IReporteMayoresCanonService;
 import edu.unla.epicentro_gourmet.services.IUnidadVentaService;
 import jakarta.validation.Valid;
 
@@ -45,17 +46,20 @@ public class AdminController {
     private final IUnidadVentaService unidadVentaService;
     private final IEmpleadoService empleadoService;
     private final IReporteVentaService reporteVentaService;
+    private final IReporteMayoresCanonService reporteMayoresCanonService;
     private final ModelMapper modelMapper;
 
     public AdminController(IFestivalService festivalService,
                            IUnidadVentaService unidadVentaService,
                            IEmpleadoService empleadoService,
                            IReporteVentaService reporteVentaService,
+                           IReporteMayoresCanonService reporteMayoresCanonService,
                            ModelMapper modelMapper) {
         this.festivalService = festivalService;
         this.unidadVentaService = unidadVentaService;
         this.empleadoService = empleadoService;
         this.reporteVentaService = reporteVentaService;
+        this.reporteMayoresCanonService = reporteMayoresCanonService;
         this.modelMapper = modelMapper;
     }
 
@@ -82,6 +86,27 @@ public class AdminController {
             }
             mAV.addObject("festivalSeleccionado", festival);
             mAV.addObject("ranking", reporteVentaService.rankingUnidadesPorRecaudacion(festivalId));
+        }
+        return mAV;
+    }
+
+    @GetMapping("/mayores-canon")
+    public ModelAndView showMayoresCanon(@RequestParam(required = false) Long festivalId,
+                                         @RequestParam(defaultValue = "3") int x) {
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.ADMIN_MAYORES_CANON);
+        mAV.addObject("festivales", festivalService.getAll());
+        mAV.addObject("cantidad", x);
+        if (festivalId != null) {
+            Festival festival = festivalService.findById(festivalId);
+            if (festival == null) {
+                return new ModelAndView("redirect:/admin/festivales");
+            }
+            mAV.addObject("festivalSeleccionado", festival);
+            if (x < 1) {
+                mAV.addObject("error", "La cantidad de unidades debe ser mayor que cero.");
+            } else {
+                mAV.addObject("unidades", reporteMayoresCanonService.mayoresCanon(festivalId, x));
+            }
         }
         return mAV;
     }

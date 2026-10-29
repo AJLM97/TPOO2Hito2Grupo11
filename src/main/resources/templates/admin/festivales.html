@@ -38,6 +38,8 @@
                                class="btn btn-sm btn-outline-primary">Ver Unidades</a>
                             <a th:href="@{/admin/ranking-recaudacion(festivalId=${festival.id})}"
                                class="btn btn-sm btn-outline-primary">Ranking</a>
+                            <a th:href="@{/admin/mayores-canon(festivalId=${festival.id})}"
+                               class="btn btn-sm btn-outline-primary">Mayores cánones</a>
                             <a th:href="@{/admin/festivales/editar/{id}(id=${festival.id})}"
                                class="btn btn-sm btn-outline-primary">Editar</a>
                             <form th:action="@{/admin/festivales/eliminar/{id}(id=${festival.id})}" method="post"
