@@ -102,6 +102,18 @@ public class HomeController {
             return "home/unidades-form";
         }
 
+        if (unidadDTO.getPasswordResponsable() == null || unidadDTO.getPasswordResponsable().isBlank()) {
+            result.rejectValue("passwordResponsable", "obligatorio", "La contraseña del responsable es obligatoria");
+        }
+        if (unidadDTO.getRepetirPassword() == null || unidadDTO.getRepetirPassword().isBlank()) {
+            result.rejectValue("repetirPassword", "obligatorio", "Debe repetir la contraseña del responsable");
+        } else if (!unidadDTO.getRepetirPassword().equals(unidadDTO.getPasswordResponsable())) {
+            result.rejectValue("repetirPassword", "noCoincide", "Las contraseñas no coinciden");
+        }
+        if (result.hasErrors()) {
+            return "home/unidades-form";
+        }
+
         String emailResponsable = unidadDTO.getEmailResponsable();
         Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(emailResponsable);
 

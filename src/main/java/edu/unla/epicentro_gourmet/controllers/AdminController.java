@@ -17,6 +17,7 @@ import edu.unla.epicentro_gourmet.helpers.ViewRouteHelper;
 import edu.unla.epicentro_gourmet.services.EnumResultadoAltaEmpleado;
 import edu.unla.epicentro_gourmet.services.IEmpleadoService;
 import edu.unla.epicentro_gourmet.services.IFestivalService;
+import edu.unla.epicentro_gourmet.services.IReporteVentaService;
 import edu.unla.epicentro_gourmet.services.IUnidadVentaService;
 import jakarta.validation.Valid;
 
@@ -43,15 +44,18 @@ public class AdminController {
     private final IFestivalService festivalService;
     private final IUnidadVentaService unidadVentaService;
     private final IEmpleadoService empleadoService;
+    private final IReporteVentaService reporteVentaService;
     private final ModelMapper modelMapper;
 
     public AdminController(IFestivalService festivalService,
                            IUnidadVentaService unidadVentaService,
                            IEmpleadoService empleadoService,
+                           IReporteVentaService reporteVentaService,
                            ModelMapper modelMapper) {
         this.festivalService = festivalService;
         this.unidadVentaService = unidadVentaService;
         this.empleadoService = empleadoService;
+        this.reporteVentaService = reporteVentaService;
         this.modelMapper = modelMapper;
     }
 
@@ -64,6 +68,21 @@ public class AdminController {
     public ModelAndView showAllFestival() {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.ADMIN_FESTIVALES);
         mAV.addObject("festivales", festivalService.listar());
+        return mAV;
+    }
+
+    @GetMapping("/ranking-recaudacion")
+    public ModelAndView showRankingRecaudacion(@RequestParam(required = false) Long festivalId) {
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.ADMIN_RANKING_RECAUDACION);
+        mAV.addObject("festivales", festivalService.getAll());
+        if (festivalId != null) {
+            Festival festival = festivalService.findById(festivalId);
+            if (festival == null) {
+                return new ModelAndView("redirect:/admin/festivales");
+            }
+            mAV.addObject("festivalSeleccionado", festival);
+            mAV.addObject("ranking", reporteVentaService.rankingUnidadesPorRecaudacion(festivalId));
+        }
         return mAV;
     }
 
@@ -121,11 +140,7 @@ public class AdminController {
     @GetMapping("/festivales/{id}/unidades/nuevo")
     public ModelAndView showFormUnidadDeVenta(@PathVariable("id") long idFestival) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.ADMIN_UNIDADES_FORM);
-        
-        String passwordAleatoria = UUID.randomUUID().toString().substring(0, 8);
         UnidadVentaDTO unidadDTO = new UnidadVentaDTO();
-        unidadDTO.setPasswordResponsable(passwordAleatoria);
-        unidadDTO.setRepetirPassword(passwordAleatoria);
 
         mAV.addObject("unidad", unidadDTO);
         mAV.addObject("idFestival", idFestival);
@@ -139,7 +154,7 @@ public class AdminController {
         }
 
         String emailResponsable = unidadDTO.getEmailResponsable();
-        String passwordResponsable = unidadDTO.getPasswordResponsable();
+        String passwordResponsable = UUID.randomUUID().toString().substring(0, 8);
         Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(emailResponsable);
 
         if (unidadVentaOptional.isPresent()) {

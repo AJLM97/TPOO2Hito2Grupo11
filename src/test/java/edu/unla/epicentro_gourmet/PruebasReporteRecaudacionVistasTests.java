@@ -29,6 +29,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -135,6 +137,53 @@ class PruebasReporteRecaudacionVistasTests {
         assertEquals(10 * 3500.0, reporte.getRecaudacion());
         assertEquals(2, reporte.getCantidadPedidos());
         assertEquals(10, reporte.getCantidadPlatos());
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMINISTRADOR")
+    void testAdminVeRankingDeUnidadesOrdenadoPorRecaudacionDePedidosCerrados() throws Exception {
+        guardarPedido(unidad, true, 3);
+        guardarPedido(unidad, false, 10);
+        guardarPedido(unidadAjena, true, 7);
+        UnidadVenta unidadSinVentas = unidadVentaRepository.save(
+                new PuestoDesarmable("Puesto sin ventas", "PD-0003", 8.0, festival, 1, 30, null));
+        Festival otroFestival = festivalRepository.save(new Festival("Otro festival", EnumTemporadaFestival.VERANO,
+                LocalDate.of(2027, 1, 1), LocalDate.of(2027, 1, 3), null));
+        UnidadVenta unidadOtroFestival = unidadVentaRepository.save(
+                new PuestoDesarmable("Puesto de otro festival", "PD-0004", 8.0, otroFestival, 1, 30, null));
+        Pedido pedidoOtroFestival = new Pedido(LocalDateTime.now(), unidadOtroFestival);
+        pedidoOtroFestival.setFestival(otroFestival);
+        pedidoOtroFestival.setCerrado(true);
+        pedidoOtroFestival.getItems().add(new ItemPedido(empanada, pedidoOtroFestival, 20));
+        pedidoRepository.save(pedidoOtroFestival);
+
+        mockMvc.perform(get("/admin/ranking-recaudacion").param("festivalId", festival.getId().toString()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/ranking-recaudacion"))
+                .andExpect(model().attribute("ranking", contains(
+                        allOf(hasProperty("nombreUnidad", is("Puesto ajeno")),
+                                hasProperty("recaudacion", is(7 * 3500.0))),
+                        allOf(hasProperty("nombreUnidad", is("Puesto propio")),
+                                hasProperty("recaudacion", is(3 * 3500.0))),
+                        allOf(hasProperty("nombreUnidad", is(unidadSinVentas.getNombreComercial())),
+                                hasProperty("recaudacion", is(0.0))))))
+                .andExpect(content().string(containsString("Ranking de unidades por recaudación")))
+                .andExpect(content().string(containsString("Festival: Festival con ventas")))
+                .andExpect(content().string(org.hamcrest.Matchers.not(containsString("Puesto de otro festival"))));
+    }
+
+    @Test
+    void testResponsableNoPuedeVerRankingDeAdmin() throws Exception {
+        mockMvc.perform(get("/admin/ranking-recaudacion"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMINISTRADOR")
+    void testRankingRedirigeSiElFestivalNoExiste() throws Exception {
+        mockMvc.perform(get("/admin/ranking-recaudacion").param("festivalId", "999999"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/festivales"));
     }
 
     @Test
