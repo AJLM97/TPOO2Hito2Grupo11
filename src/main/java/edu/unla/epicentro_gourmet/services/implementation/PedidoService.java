@@ -71,7 +71,8 @@ public class PedidoService implements IPedidoService {
     @Override
     @Transactional
     public Pedido abrir(UnidadVenta unidadVenta) {
-        UnidadVenta unidad = unidadVentaService.findById(unidadVenta.getId());
+        UnidadVenta unidad = unidadVentaService.findById(unidadVenta.getId())
+                .orElseThrow(() -> new IllegalArgumentException("La unidad de venta no existe"));
         Pedido pedido = new Pedido(LocalDateTime.now(), unidad);
         pedido.setFestival(unidad.getFestival());
         return pedidoRepository.save(pedido);
