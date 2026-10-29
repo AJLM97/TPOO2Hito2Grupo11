@@ -10,6 +10,65 @@
         <a th:href="@{/responsable/empleados/nuevo}" class="btn btn-primary">Agregar Empleado</a>
     </div>
 
+    <div class="card mb-3">
+        <div class="card-body">
+            <form th:action="@{/responsable/empleados}" th:object="${filtro}" method="get" class="row g-2 align-items-end">
+                <div class="col-md-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label for="apellido" class="form-label">Apellido</label>
+                    <input type="text" id="apellido" th:field="*{apellido}" class="form-control">
+                </div>
+                <div class="col-md-2">
+                    <label for="dni" class="form-label">DNI</label>
+                    <input type="number" id="dni" th:field="*{dni}" class="form-control">
+                </div>
+                <div class="col-md-2">
+                    <label for="tipoEmpleado" class="form-label">Tipo</label>
+                    <select id="tipoEmpleado" th:field="*{tipoEmpleado}" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="CAJERO">Cajero</option>
+                        <option value="COCINERO">Cocinero</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="categoriaCocinero" class="form-label">Categoría</label>
+                    <select id="categoriaCocinero" th:field="*{categoriaCocinero}" class="form-select">
+                        <option value="">Todas</option>
+                        <option value="COCINERO">Cocinero</option>
+                        <option value="COCINERO_AYUDANTE">Cocinero ayudante</option>
+                        <option value="LAVAPLATOS">Lavaplatos</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="turnoTrabajo" class="form-label">Turno</label>
+                    <select id="turnoTrabajo" th:field="*{turnoTrabajo}" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="MANANA">Mañana</option>
+                        <option value="TARDE">Tarde</option>
+                        <option value="NOCHE">Noche</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="ingresoDesde" class="form-label">Ingreso desde</label>
+                    <input type="date" id="ingresoDesde" th:field="*{ingresoDesde}" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label for="ingresoHasta" class="form-label">Ingreso hasta</label>
+                    <input type="date" id="ingresoHasta" th:field="*{ingresoHasta}" class="form-control">
+                </div>
+                <div class="col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <a th:href="@{/responsable/empleados}" class="btn btn-outline-secondary">Limpiar</a>
+                </div>
+                <div class="col-12 text-danger" th:if="${#fields.hasErrors('rangoFechasValido')}"
+                     th:errors="*{rangoFechasValido}"></div>
+            </form>
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">

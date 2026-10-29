@@ -1,7 +1,9 @@
 package edu.unla.epicentro_gourmet.services;
 
+import edu.unla.epicentro_gourmet.dtos.FiltroEmpleadoDTO;
 import edu.unla.epicentro_gourmet.entities.Empleado;
 import edu.unla.epicentro_gourmet.entities.UnidadVenta;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,4 +29,6 @@ public interface IEmpleadoService {
     public Optional<Empleado> findByIdAndUnidadVenta(long id, UnidadVenta unidadVenta);
 
     EnumResultadoAltaEmpleado altaOReactivar(Empleado candidato, String emailPersonal);
+
+    List<Empleado> filtrar(UnidadVenta unidadVenta, @Valid FiltroEmpleadoDTO filtro);
 }

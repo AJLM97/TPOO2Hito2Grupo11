@@ -1,10 +1,12 @@
 package edu.unla.epicentro_gourmet.services.implementation;
 
+import edu.unla.epicentro_gourmet.dtos.FiltroEmpleadoDTO;
 import edu.unla.epicentro_gourmet.entities.*;
 import edu.unla.epicentro_gourmet.repositories.IEmpleadoRepository;
 import edu.unla.epicentro_gourmet.services.EnumResultadoAltaEmpleado;
 import edu.unla.epicentro_gourmet.services.IEmpleadoService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -159,5 +161,35 @@ public class EmpleadoService implements IEmpleadoService {
                 "Correo de acceso: " + emailUsuario + "\n" +
                 "Contraseña temporal: " + password + "\n\nPor seguridad, recordá cambiarla en tu primer ingreso.");
         mailSender.send(mensaje);
+    }
+
+    @Override
+    public List<Empleado> filtrar(UnidadVenta unidadVenta, @Valid FiltroEmpleadoDTO f) {
+        return empleadoRepository.findByUnidadAndActivoTrue(unidadVenta).stream()
+                .filter(e -> contiene(e.getNombre(), f.getNombre()))
+                .filter(e -> contiene(e.getApellido(), f.getApellido()))
+                .filter(e -> f.getDni() == null || e.getDni() == f.getDni())
+                .filter(e -> coincideTipo(e, f.getTipoEmpleado()))
+                .filter(e -> f.getCategoriaCocinero() == null
+                        || (e instanceof Cocinero c && c.getCategoria() == f.getCategoriaCocinero()))
+                .filter(e -> f.getTurnoTrabajo() == null
+                        || (e instanceof Cajero c && c.getTurnoTrabajo() == f.getTurnoTrabajo()))
+                .filter(e -> f.getIngresoDesde() == null || !e.getFechaIngreso().isBefore(f.getIngresoDesde()))
+                .filter(e -> f.getIngresoHasta() == null || !e.getFechaIngreso().isAfter(f.getIngresoHasta()))
+                .toList();
+    }
+
+    private boolean contiene(String valor, String texto) {
+        return texto == null || texto.isBlank()
+                || valor.toLowerCase().contains(texto.trim().toLowerCase());
+    }
+
+    private boolean coincideTipo(Empleado e, String tipo) {
+        if (tipo == null || tipo.isBlank()) return true;
+        return switch (tipo.toUpperCase()) {
+            case "COCINERO" -> e instanceof Cocinero;
+            case "CAJERO" -> e instanceof Cajero;
+            default -> true;
+        };
     }
 }

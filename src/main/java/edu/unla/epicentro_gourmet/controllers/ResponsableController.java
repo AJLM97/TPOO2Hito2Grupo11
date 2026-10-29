@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import org.modelmapper.ModelMapper;
+import edu.unla.epicentro_gourmet.dtos.FiltroEmpleadoDTO;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -45,14 +47,18 @@ public class ResponsableController {
     }
 
     @GetMapping("/empleados")
-    public ModelAndView showAllEmpleado(Authentication authentication) {
+    public ModelAndView showAllEmpleado(@Valid @ModelAttribute("filtro") FiltroEmpleadoDTO filtro,
+                                        BindingResult result, Authentication authentication) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.RESPONSABLE_EMPLEADOS);
         Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
         if (unidadVentaOptional.isEmpty()) {
             return new ModelAndView(new RedirectView("/responsable/empleados"));
         }
         UnidadVenta unidadVenta = unidadVentaOptional.get();
-        mAV.addObject("empleados", empleadoService.findByUnidadVenta(unidadVenta));
+        List<Empleado> empleados = result.hasErrors()
+                ? empleadoService.findByUnidadVenta(unidadVenta)   // filtro inválido: muestra todos + el error
+                : empleadoService.filtrar(unidadVenta, filtro);
+        mAV.addObject("empleados", empleados);
         return mAV;
     }
 
