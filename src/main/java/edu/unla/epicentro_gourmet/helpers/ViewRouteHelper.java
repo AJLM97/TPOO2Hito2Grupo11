@@ -14,6 +14,7 @@ public class ViewRouteHelper {
     public final static String ADMIN_UNIDADES_EDIT = "responsable/platos-edit";
 
     // RESPONSABLE
+    public final static String RESPONSABLE_LIQUIDACION = "responsable/liquidacion";
     public final static String RESPONSABLE_EMPLEADOS = "responsable/empleados";
     public final static String RESPONSABLE_EMPLEADO_FORM = "responsable/empleados-form";
     public final static String RESPONSABLE_PLATOS = "responsable/platos";
