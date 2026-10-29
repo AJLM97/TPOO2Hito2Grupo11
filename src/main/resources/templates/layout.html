@@ -25,6 +25,9 @@
                     <a class="nav-link" th:href="@{/responsable/empleados}">Empleados</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasAuthority('RESPONSABLE')">
+                    <a class="nav-link" th:href="@{/responsable/liquidacion}">Liquidación</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAuthority('RESPONSABLE')">
                     <a class="nav-link" th:href="@{/responsable/platos}">Platos</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasAuthority('RESPONSABLE')">
