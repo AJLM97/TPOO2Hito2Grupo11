@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Rentabilidad neta</h2>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form th:action="@{/responsable/reportes/rentabilidad}" method="get" class="form-inline">
+                <label for="desde" class="mr-2">Desde</label>
+                <input type="date" id="desde" name="desde" th:value="${desde}" class="form-control mr-3"/>
+                <label for="hasta" class="mr-2">Hasta</label>
+                <input type="date" id="hasta" name="hasta" th:value="${hasta}" class="form-control mr-3"/>
+                <button type="submit" class="btn btn-primary mr-2">Calcular entre fechas</button>
+                <a th:href="@{/responsable/reportes/rentabilidad}" class="btn btn-outline-secondary">Todo el festival</a>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${error != null}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div th:if="${calculado != null and reporte == null}" class="alert alert-warning">
+        El festival de la unidad no tiene costos configurados, por lo que no se puede calcular la rentabilidad.
+    </div>
+
+    <div th:if="${reporte != null}" class="card">
+        <div class="card-body">
+            <p class="mb-1"><strong th:text="${reporte.nombreUnidad}"></strong>
+                (<span th:text="${reporte.codigoUnidad}"></span>)</p>
+            <p class="text-muted">Festival: <span th:text="${reporte.nombreFestival}"></span>
+                -
+                <span th:if="${reporte.desde == null}">todos los pedidos cerrados</span>
+                <span th:if="${reporte.desde != null}">pedidos cerrados del <span th:text="${reporte.desde}"></span>
+                    al <span th:text="${reporte.hasta}"></span></span>
+            </p>
+
+            <table class="table table-striped mb-0">
+                <tbody>
+                <tr>
+                    <td>Pedidos totales</td>
+                    <td class="text-right" th:text="${#numbers.formatDecimal(reporte.ingresos, 1, 2)}"></td>
+                </tr>
+                <tr>
+                    <td>Costo de los platos</td>
+                    <td class="text-right" th:text="${'-' + #numbers.formatDecimal(reporte.costoPlatos, 1, 2)}"></td>
+                </tr>
+                <tr>
+                    <th>Ganancia bruta</th>
+                    <th class="text-right" th:text="${#numbers.formatDecimal(reporte.gananciaBruta, 1, 2)}"></th>
+                </tr>
+                <tr>
+                    <td>Sueldos del personal</td>
+                    <td class="text-right" th:text="${'-' + #numbers.formatDecimal(reporte.sueldos, 1, 2)}"></td>
+                </tr>
+                <tr>
+                    <td>Canon de la unidad</td>
+                    <td class="text-right" th:text="${'-' + #numbers.formatDecimal(reporte.canon, 1, 2)}"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Rentabilidad neta</th>
+                    <th class="text-right" th:text="${#numbers.formatDecimal(reporte.rentabilidadNeta, 1, 2)}"></th>
+                </tr>
+                </tfoot>
+            </table>
+            <p class="text-muted small mt-3 mb-0">Solo se cuentan los pedidos cerrados. Los sueldos y el canon se
+                restan completos aunque se elija un rango de fechas.</p>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>
