@@ -1,11 +1,13 @@
 package edu.unla.epicentro_gourmet.controllers;
 
 import edu.unla.epicentro_gourmet.dtos.EmpleadoDTO;
+import edu.unla.epicentro_gourmet.dtos.RankingConcurrenciaDTO;
 import edu.unla.epicentro_gourmet.dtos.SolicitudFestival;
 import edu.unla.epicentro_gourmet.dtos.UnidadVentaDTO;
 import edu.unla.epicentro_gourmet.entities.Cajero;
 import edu.unla.epicentro_gourmet.entities.Cocinero;
 import edu.unla.epicentro_gourmet.entities.Empleado;
+import edu.unla.epicentro_gourmet.entities.EnumTemporadaFestival;
 import edu.unla.epicentro_gourmet.entities.EnumCategoriaCocinero;
 import edu.unla.epicentro_gourmet.entities.EnumTurnoCajero;
 import edu.unla.epicentro_gourmet.entities.PuestoDesarmable;
@@ -17,6 +19,7 @@ import edu.unla.epicentro_gourmet.helpers.ViewRouteHelper;
 import edu.unla.epicentro_gourmet.services.EnumResultadoAltaEmpleado;
 import edu.unla.epicentro_gourmet.services.IEmpleadoService;
 import edu.unla.epicentro_gourmet.services.IFestivalService;
+import edu.unla.epicentro_gourmet.services.IRankingConcurrenciaService;
 import edu.unla.epicentro_gourmet.services.IReporteVentaService;
 import edu.unla.epicentro_gourmet.services.IReporteMayoresCanonService;
 import edu.unla.epicentro_gourmet.services.IUnidadVentaService;
@@ -47,6 +50,7 @@ public class AdminController {
     private final IEmpleadoService empleadoService;
     private final IReporteVentaService reporteVentaService;
     private final IReporteMayoresCanonService reporteMayoresCanonService;
+    private final IRankingConcurrenciaService rankingConcurrenciaService;
     private final ModelMapper modelMapper;
 
     public AdminController(IFestivalService festivalService,
@@ -54,12 +58,14 @@ public class AdminController {
                            IEmpleadoService empleadoService,
                            IReporteVentaService reporteVentaService,
                            IReporteMayoresCanonService reporteMayoresCanonService,
+                           IRankingConcurrenciaService rankingConcurrenciaService,
                            ModelMapper modelMapper) {
         this.festivalService = festivalService;
         this.unidadVentaService = unidadVentaService;
         this.empleadoService = empleadoService;
         this.reporteVentaService = reporteVentaService;
         this.reporteMayoresCanonService = reporteMayoresCanonService;
+        this.rankingConcurrenciaService = rankingConcurrenciaService;
         this.modelMapper = modelMapper;
     }
 
@@ -107,6 +113,20 @@ public class AdminController {
             } else {
                 mAV.addObject("unidades", reporteMayoresCanonService.mayoresCanon(festivalId, x));
             }
+        }
+        return mAV;
+    }
+
+    @GetMapping("/ranking-concurrencia")
+    public ModelAndView showRankingConcurrencia(
+            @RequestParam(required = false) EnumTemporadaFestival temporada) {
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.ADMIN_RANKING_CONCURRENCIA);
+        mAV.addObject("temporadas", EnumTemporadaFestival.values());
+        mAV.addObject("temporadaSeleccionada", temporada);
+        if (temporada != null) {
+            List<RankingConcurrenciaDTO> ranking =
+                    rankingConcurrenciaService.rankingPorTemporada(temporada);
+            mAV.addObject("festivales", ranking);
         }
         return mAV;
     }
