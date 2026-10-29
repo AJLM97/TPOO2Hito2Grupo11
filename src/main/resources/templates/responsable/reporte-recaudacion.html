@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Reporte de recaudación</h2>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <p class="mb-1"><strong th:text="${reporte.nombreUnidad}"></strong>
+                (<span th:text="${reporte.codigoUnidad}"></span>)</p>
+            <p class="text-muted">Festival: <span th:text="${reporte.nombreFestival}"></span></p>
+
+            <table class="table table-striped mb-0">
+                <tbody>
+                <tr>
+                    <th>Pedidos cerrados</th>
+                    <td class="text-right" th:text="${reporte.cantidadPedidos}"></td>
+                </tr>
+                <tr>
+                    <th>Platos vendidos</th>
+                    <td class="text-right" th:text="${reporte.cantidadPlatos}"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Recaudación total</th>
+                    <th class="text-right" th:text="${#numbers.formatDecimal(reporte.recaudacion, 1, 2)}"></th>
+                </tr>
+                </tfoot>
+            </table>
+            <p class="text-muted small mt-3 mb-0">Solo se cuentan los pedidos cerrados.</p>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>
