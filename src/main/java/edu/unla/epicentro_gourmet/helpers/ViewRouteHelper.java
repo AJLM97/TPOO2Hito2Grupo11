@@ -14,6 +14,7 @@ public class ViewRouteHelper {
     public final static String ADMIN_UNIDADES_EDIT = "responsable/platos-edit";
     public final static String ADMIN_RANKING_RECAUDACION = "admin/ranking-recaudacion";
     public final static String ADMIN_MAYORES_CANON = "admin/mayores-canon";
+    public final static String ADMIN_RANKING_CONCURRENCIA = "admin/ranking-concurrencia";
 
     // RESPONSABLE
     public final static String RESPONSABLE_LIQUIDACION = "responsable/liquidacion";
