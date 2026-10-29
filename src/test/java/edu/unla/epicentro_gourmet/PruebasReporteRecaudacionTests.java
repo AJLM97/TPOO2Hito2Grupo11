@@ -10,6 +10,7 @@ import edu.unla.epicentro_gourmet.entities.PuestoDesarmable;
 import edu.unla.epicentro_gourmet.entities.UnidadVenta;
 import edu.unla.epicentro_gourmet.repositories.IFestivalRepository;
 import edu.unla.epicentro_gourmet.repositories.IPedidoRepository;
+import edu.unla.epicentro_gourmet.repositories.IUnidadVentaRepository;
 import edu.unla.epicentro_gourmet.services.implementation.ReporteVentaService;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,9 @@ import static org.mockito.Mockito.when;
 class PruebasReporteRecaudacionTests {
     private final IPedidoRepository pedidoRepository = mock(IPedidoRepository.class);
     private final IFestivalRepository festivalRepository = mock(IFestivalRepository.class);
-    private final ReporteVentaService reporteVentaService = new ReporteVentaService(pedidoRepository, festivalRepository);
+    private final IUnidadVentaRepository unidadVentaRepository = mock(IUnidadVentaRepository.class);
+    private final ReporteVentaService reporteVentaService = new ReporteVentaService(
+            pedidoRepository, festivalRepository, unidadVentaRepository);
 
     private final Festival festival = new Festival("Festival de prueba", EnumTemporadaFestival.PRIMAVERA,
             LocalDate.of(2026, 11, 1), LocalDate.of(2026, 11, 3), null);

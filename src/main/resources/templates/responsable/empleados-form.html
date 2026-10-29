@@ -12,6 +12,8 @@
     <div class="card form-card">
         <div class="card-body">
             <form th:action="@{/responsable/empleados/guardar}" th:object="${empleado}" method="post">
+                <input type="hidden" th:field="*{passwordResponsable}">
+                <input type="hidden" th:field="*{repetirPassword}">
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
                     <ul class="mb-0">
                         <li th:each="error : ${#fields.errors('*')}" th:text="${error}"></li>
