@@ -15,6 +15,7 @@ public class ViewRouteHelper {
 
     // RESPONSABLE
     public final static String RESPONSABLE_EMPLEADOS = "responsable/empleados";
+    public final static String RESPONSABLE_AUDITORIA_PEDIDOS = "responsable/auditoria-pedidos";
     public final static String RESPONSABLE_EMPLEADO_FORM = "responsable/empleados-form";
     public final static String RESPONSABLE_PLATOS = "responsable/platos";
     public final static String RESPONSABLE_PLATO_FORM = "responsable/platos-form";
