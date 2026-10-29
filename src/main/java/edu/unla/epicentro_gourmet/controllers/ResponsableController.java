@@ -6,6 +6,7 @@ import edu.unla.epicentro_gourmet.entities.*;
 import edu.unla.epicentro_gourmet.helpers.ViewRouteHelper;
 import edu.unla.epicentro_gourmet.services.EnumResultadoAltaEmpleado;
 import edu.unla.epicentro_gourmet.services.EnumResultadoGuardadoPlato;
+import edu.unla.epicentro_gourmet.services.ICanonService;
 import edu.unla.epicentro_gourmet.services.IEmpleadoService;
 import edu.unla.epicentro_gourmet.services.IPlatoService;
 import edu.unla.epicentro_gourmet.services.IUnidadVentaService;
@@ -29,19 +30,33 @@ public class ResponsableController {
     private final IEmpleadoService empleadoService;
     private final IPlatoService platoService;
     private final IUnidadVentaService unidadVentaService;
+    private final ICanonService canonService;
     private final ModelMapper modelMapper;
 
     public ResponsableController(IEmpleadoService empleadoService,
-                                 IPlatoService platoService, IUnidadVentaService unidadVentaService, ModelMapper modelMapper) {
+                                 IPlatoService platoService, IUnidadVentaService unidadVentaService,
+                                 ICanonService canonService, ModelMapper modelMapper) {
         this.empleadoService = empleadoService;
         this.platoService = platoService;
         this.unidadVentaService = unidadVentaService;
+        this.canonService = canonService;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping("")
     public RedirectView index() {
         return new RedirectView("/responsable/empleados");
+    }
+
+    @GetMapping("/canon")
+    public ModelAndView showCanon(Authentication authentication) {
+        Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
+        if (unidadVentaOptional.isEmpty()) {
+            return new ModelAndView(new RedirectView("/responsable/empleados"));
+        }
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.RESPONSABLE_CANON);
+        mAV.addObject("canon", canonService.calcular(unidadVentaOptional.get()).orElse(null));
+        return mAV;
     }
 
     @GetMapping("/empleados")
