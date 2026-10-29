@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Nuevo Festival</h2>
+    </div>
+
+    <div class="card form-card">
+        <div class="card-body">
+            <form th:action="@{/admin/festivales/guardar}" th:object="${festival}" method="post">
+                <div th:replace="~{admin/festivales-campos :: campos}"></div>
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-success mr-2">Crear</button>
+                    <a th:href="@{/admin/festivales}" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>

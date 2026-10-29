@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header d-flex justify-content-between align-items-center">
+        <h2>Festivales</h2>
+        <a th:href="@{/admin/festivales/nuevo}" class="btn btn-primary">Agregar Festival</a>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Temporada</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="festival : ${festivales}">
+                        <td th:text="${festival.id}"></td>
+                        <td th:text="${festival.nombre}"></td>
+                        <td th:text="${#strings.capitalize(#strings.toLowerCase(festival.temporada.name()))}"></td>
+                        <td th:text="${festival.fechaInicio}"></td>
+                        <td th:text="${festival.fechaFin}"></td>
+                        <td class="action-buttons">
+                            <a th:href="@{/admin/festivales/{id}/unidades(id=${festival.id})}"
+                               class="btn btn-sm btn-outline-primary">Ver Unidades</a>
+                            <a th:href="@{/admin/festivales/editar/{id}(id=${festival.id})}"
+                               class="btn btn-sm btn-outline-primary">Editar</a>
+                            <form th:action="@{/admin/festivales/eliminar/{id}(id=${festival.id})}" method="post"
+                                  class="d-inline" onsubmit="return confirm('¿Quieres eliminar el festival?')">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${festivales == null or festivales.isEmpty()}" class="text-center text-muted py-4">
+                No hay festivales registrados.
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>

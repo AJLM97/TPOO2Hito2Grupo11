@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="campos">
+    <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+        <ul class="mb-0">
+            <li th:each="error : ${#fields.errors('*')}" th:text="${error}"></li>
+        </ul>
+    </div>
+    <div class="mb-3">
+        <label for="nombre" class="col-form-label">Nombre</label>
+        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required placeholder="Ingrese el nombre"/>
+    </div>
+    <div class="mb-3">
+        <label for="temporada" class="col-form-label">Temporada</label>
+        <select id="temporada" th:field="*{temporada}" class="form-select" required>
+            <option value="VERANO">Verano</option>
+            <option value="OTONO">Otoño</option>
+            <option value="INVIERNO">Invierno</option>
+            <option value="PRIMAVERA">Primavera</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="fechaInicio" class="col-form-label">Fecha de inicio</label>
+        <input type="date" class="form-control" id="fechaInicio" th:field="*{fechaInicio}" required/>
+    </div>
+    <div class="mb-3">
+        <label for="fechaFin" class="col-form-label">Fecha de fin</label>
+        <input type="date" class="form-control" id="fechaFin" th:field="*{fechaFin}" required/>
+    </div>
+
+    <h5 class="mt-4">Costos del festival</h5>
+    <div class="mb-3">
+        <label for="sueldoBase" class="col-form-label">Sueldo base</label>
+        <input type="number" step="0.01" min="0" id="sueldoBase" th:field="*{costos.sueldoBase}" class="form-control" required/>
+    </div>
+    <div class="mb-3">
+        <label for="costoSuperficie" class="col-form-label">Costo por superficie (por m²)</label>
+        <input type="number" step="0.01" min="0" id="costoSuperficie" th:field="*{costos.costoSuperficie}" class="form-control" required/>
+        <select th:field="*{costos.aplicacionCostoSuperficie}" class="form-select mt-1" aria-label="Se aplica a">
+            <option value="TODAS">Se aplica a todas las unidades</option>
+            <option value="FOOD_TRUCK">Se aplica solo a Food Trucks</option>
+            <option value="PUESTO_DESARMABLE">Se aplica solo a Puestos Desarmables</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="costoMontaje" class="col-form-label">Costo por montaje (por minuto)</label>
+        <input type="number" step="0.01" min="0" id="costoMontaje" th:field="*{costos.costoMontaje}" class="form-control" required/>
+        <select th:field="*{costos.aplicacionCostoMontaje}" class="form-select mt-1" aria-label="Se aplica a">
+            <option value="TODAS">Se aplica a todas las unidades</option>
+            <option value="FOOD_TRUCK">Se aplica solo a Food Trucks</option>
+            <option value="PUESTO_DESARMABLE">Se aplica solo a Puestos Desarmables</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="plusElectricidad" class="col-form-label">Plus por uso de electricidad</label>
+        <input type="number" step="0.01" min="0" id="plusElectricidad" th:field="*{costos.plusElectricidad}" class="form-control" required/>
+        <select th:field="*{costos.aplicacionPlusElectricidad}" class="form-select mt-1" aria-label="Se aplica a">
+            <option value="TODAS">Se aplica a todas las unidades</option>
+            <option value="FOOD_TRUCK">Se aplica solo a Food Trucks</option>
+        </select>
+    </div>
+
+    <h5 class="mt-4">Plus por categoría y antigüedad</h5>
+    <div class="mb-3">
+        <label for="plusCocinero" class="col-form-label">Plus cocinero</label>
+        <input type="number" step="0.01" min="0" id="plusCocinero" th:field="*{costos.plusCocinero}" class="form-control" required/>
+    </div>
+    <div class="mb-3">
+        <label for="plusAyudante" class="col-form-label">Plus cocinero ayudante</label>
+        <input type="number" step="0.01" min="0" id="plusAyudante" th:field="*{costos.plusAyudante}" class="form-control" required/>
+    </div>
+    <div class="mb-3">
+        <label for="plusLavaplatos" class="col-form-label">Plus lavaplatos</label>
+        <input type="number" step="0.01" min="0" id="plusLavaplatos" th:field="*{costos.plusLavaplatos}" class="form-control" required/>
+    </div>
+    <div class="mb-3">
+        <label for="plusAntiguedad" class="col-form-label">Plus por año de antigüedad</label>
+        <input type="number" step="0.01" min="0" id="plusAntiguedad" th:field="*{costos.plusAntiguedad}" class="form-control" required/>
+    </div>
+</th:block>
+</body>
+</html>

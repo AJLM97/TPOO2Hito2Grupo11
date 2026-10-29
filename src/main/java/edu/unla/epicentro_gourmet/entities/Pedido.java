@@ -41,4 +41,10 @@ public class Pedido {
         this.unidadVenta = unidadVenta;
         this.cerrado = false;
     }
+
+    public double getTotal() {
+        return items.stream()
+                .mapToDouble(item -> item.getPlato().getPrecioVenta() * item.getCantidad())
+                .sum();
+    }
 }
