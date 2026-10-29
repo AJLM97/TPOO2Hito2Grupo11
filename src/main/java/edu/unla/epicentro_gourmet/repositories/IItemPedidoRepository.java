@@ -25,6 +25,18 @@ public interface IItemPedidoRepository extends JpaRepository<ItemPedido, Long> {
         Long getUnidades();
     }
 
+    interface PlatoRentable {
+        String getNombre();
+
+        Double getPrecioVenta();
+
+        Double getCostoProduccion();
+
+        Long getUnidadesVendidas();
+
+        Double getRentabilidad();
+    }
+
     // Más unidades primero; en un empate gana el plato cargado antes (menor id).
     @Query("SELECT p.id AS id, p.nombre AS nombre, p.precioVenta AS precioVenta, "
             + "p.costoProduccion AS costoProduccion, SUM(i.cantidad) AS unidades "
@@ -33,4 +45,14 @@ public interface IItemPedidoRepository extends JpaRepository<ItemPedido, Long> {
             + "GROUP BY p.id, p.nombre, p.precioVenta, p.costoProduccion "
             + "ORDER BY SUM(i.cantidad) DESC, p.id ASC")
     List<PlatoPedido> findPlatosMasPedidos(@Param("unidad") UnidadVenta unidad, Pageable pageable);
+
+    @Query("SELECT p.nombre AS nombre, p.precioVenta AS precioVenta, "
+            + "p.costoProduccion AS costoProduccion, SUM(i.cantidad) AS unidadesVendidas, "
+            + "(p.precioVenta - p.costoProduccion) * SUM(i.cantidad) AS rentabilidad "
+            + "FROM ItemPedido i JOIN i.plato p JOIN i.pedido pe "
+            + "WHERE pe.unidadVenta = :unidad AND p.unidad = :unidad AND pe.cerrado = true "
+            + "GROUP BY p.id, p.nombre, p.precioVenta, p.costoProduccion "
+            + "ORDER BY (p.precioVenta - p.costoProduccion) * SUM(i.cantidad) DESC, p.id ASC")
+    List<PlatoRentable> findPlatosPorRentabilidad(@Param("unidad") UnidadVenta unidad,
+                                                  Pageable pageable);
 }

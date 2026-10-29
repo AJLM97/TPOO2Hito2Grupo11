@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Platos más rentables</h2>
+        <p class="text-muted mb-0">
+            <span th:text="${unidad.nombreComercial}"></span> (<span th:text="${unidad.codigo}"></span>)
+            - La rentabilidad se calcula como (precio de venta - costo de producción) × unidades vendidas.
+        </p>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form th:action="@{/responsable/reportes/platos-rentables}" method="get"
+                  class="form-inline">
+                <label for="cantidad" class="mr-2">Cantidad de platos a mostrar (mínimo 3)</label>
+                <input type="number" id="cantidad" name="cantidad" min="3"
+                       th:value="${cantidad}" class="form-control mr-3" required/>
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${error != null}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:if="${platos != null and platos.isEmpty()}" class="alert alert-info">
+        No hay platos con ventas cerradas para mostrar.
+    </div>
+
+    <div class="card" th:if="${platos != null and !platos.isEmpty()}">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0">
+                <thead>
+                <tr>
+                    <th>Puesto</th>
+                    <th>Nombre del plato</th>
+                    <th class="text-right">Unidades vendidas</th>
+                    <th class="text-right">Precio de venta</th>
+                    <th class="text-right">Costo de producción</th>
+                    <th class="text-right">Rentabilidad</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="plato, estado : ${platos}">
+                    <td th:text="${estado.count}"></td>
+                    <td th:text="${plato.nombre}"></td>
+                    <td class="text-right" th:text="${plato.unidadesVendidas}"></td>
+                    <td class="text-right"
+                        th:text="${#numbers.formatDecimal(plato.precioVenta, 1, 2)}"></td>
+                    <td class="text-right"
+                        th:text="${#numbers.formatDecimal(plato.costoProduccion, 1, 2)}"></td>
+                    <td class="text-right font-weight-bold"
+                        th:text="${#numbers.formatDecimal(plato.rentabilidad, 1, 2)}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>
