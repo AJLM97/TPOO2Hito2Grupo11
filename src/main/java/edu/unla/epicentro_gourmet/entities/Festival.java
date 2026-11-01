@@ -27,7 +27,7 @@ public class Festival {
     private EnumTemporadaFestival temporada;
 
     @Column(nullable = false, name = "fecha_inicio")
-    private LocalDate fechInicio;
+    private LocalDate fechaInicio;
 
     @Column(nullable = false, name = "fecha_fin")
     private LocalDate fechaFin;
@@ -39,10 +39,10 @@ public class Festival {
     @JoinColumn(name = "id_costos", unique = true)
     private Costos costo;
 
-    public Festival(String nombre, EnumTemporadaFestival temporada, LocalDate fechInicio, LocalDate fechaFin, Costos costos) {
+    public Festival(String nombre, EnumTemporadaFestival temporada, LocalDate fechaInicio, LocalDate fechaFin, Costos costos) {
         this.nombre = nombre;
         this.temporada = temporada;
-        this.fechInicio = fechInicio;
+        this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.costo = costos;
     }

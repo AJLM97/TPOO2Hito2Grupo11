@@ -124,7 +124,6 @@ public class EmpleadoService implements IEmpleadoService {
         empleadoExistente.setApellido(empleadoActualizado.getApellido());
         empleadoExistente.setFechaNacimiento(empleadoActualizado.getFechaNacimiento());
         empleadoExistente.setFechaIngreso(LocalDate.now());
-        empleadoExistente.setSueldoBase(empleadoActualizado.getSueldoBase());
         empleadoExistente.setUnidad(empleadoActualizado.getUnidad());
         empleadoExistente.setActivo(true);
 
@@ -149,7 +148,7 @@ public class EmpleadoService implements IEmpleadoService {
         mensaje.setSubject("Bienvenido a Epicentro Gourmet - Tus Credenciales");
         mensaje.setText("Hola " + nombre + ",\n\nTu cuenta de staff ha sido reactivada con éxito.\n" +
                 "Correo de acceso: " + emailUsuario + "\n" +
-                "Contraseña temporal: " + password + "\n\nPor seguridad, recordá cambiarla en tu primer ingreso.");
+                "Contraseña: " + password);
         mailSender.send(mensaje);
     }
 
@@ -159,7 +158,7 @@ public class EmpleadoService implements IEmpleadoService {
         mensaje.setSubject("Bienvenido a Epicentro Gourmet - Tus Credenciales");
         mensaje.setText("Hola " + nombre + ",\n\nTu cuenta de staff ha sido creada con éxito.\n" +
                 "Correo de acceso: " + emailUsuario + "\n" +
-                "Contraseña temporal: " + password + "\n\nPor seguridad, recordá cambiarla en tu primer ingreso.");
+                "Contraseña: " + password);
         mailSender.send(mensaje);
     }
 

@@ -57,7 +57,7 @@ public class FestivalService implements IFestivalService {
     @Override
     @Transactional(readOnly = true)
     public List<RespuestaFestival> listar() {
-        return festivalRepository.findAll(Sort.by(Sort.Direction.ASC, "fechInicio"))
+        return festivalRepository.findAll(Sort.by(Sort.Direction.ASC, "fechaInicio"))
                 .stream()
                 .map(this::mapearRespuesta)
                 .toList();
@@ -108,6 +108,12 @@ public class FestivalService implements IFestivalService {
                 .sorted(Comparator.comparing(UnidadVenta::getCodigo, String.CASE_INSENSITIVE_ORDER))
                 .map(this::mapearUnidadVenta)
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Festival> listarFestivalesNoConcluidos() {
+        return festivalRepository.findFestivalesNoConcluidos();
     }
 
     private Festival buscarPorId(Long id) {

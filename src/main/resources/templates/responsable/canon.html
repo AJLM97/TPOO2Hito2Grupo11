@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Canon de la unidad</h2>
+    </div>
+
+    <div th:if="${canon == null}" class="alert alert-warning">
+        El festival de la unidad no tiene costos configurados, por lo que no se puede calcular el canon.
+    </div>
+
+    <div th:if="${canon != null}" class="card">
+        <div class="card-body">
+            <p class="mb-1"><strong th:text="${canon.nombreComercial}"></strong>
+                (<span th:text="${canon.codigo}"></span> - <span th:text="${canon.tipoUnidad}"></span>)</p>
+            <p class="text-muted">Festival: <span th:text="${canon.nombreFestival}"></span></p>
+
+            <table class="table table-striped mb-0">
+                <thead>
+                <tr>
+                    <th>Concepto</th>
+                    <th>Cálculo</th>
+                    <th class="text-right">Importe</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Superficie</td>
+                    <td><span th:text="${#numbers.formatDecimal(canon.superficie, 1, 2)}"></span> m² x $<span
+                            th:text="${#numbers.formatDecimal(canon.costoSuperficie, 1, 2)}"></span></td>
+                    <td class="text-right" th:text="${#numbers.formatDecimal(canon.importeSuperficie, 1, 2)}"></td>
+                </tr>
+                <tr>
+                    <td>Plus por electricidad</td>
+                    <td>Food Truck con conexión eléctrica</td>
+                    <td class="text-right" th:text="${#numbers.formatDecimal(canon.plusElectricidad, 1, 2)}"></td>
+                </tr>
+                <tr>
+                    <td>Descuento por montaje</td>
+                    <td><span th:text="${#numbers.formatDecimal(canon.tiempoMontajeMinutos, 1, 0)}"></span> min x $<span
+                            th:text="${#numbers.formatDecimal(canon.costoMontaje, 1, 2)}"></span></td>
+                    <td class="text-right" th:text="${'-' + #numbers.formatDecimal(canon.descuentoMontaje, 1, 2)}"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="2">Canon a pagar</th>
+                    <th class="text-right" th:text="${#numbers.formatDecimal(canon.canon, 1, 2)}"></th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>

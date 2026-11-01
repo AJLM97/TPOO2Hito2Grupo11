@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Auditoría de pedidos</h2>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form th:action="@{/responsable/pedidos}" method="get" class="form-inline">
+                <label for="desde" class="mr-2">Desde</label>
+                <input type="date" id="desde" name="desde" th:value="${desde}" class="form-control mr-3"/>
+                <label for="hasta" class="mr-2">Hasta</label>
+                <input type="date" id="hasta" name="hasta" th:value="${hasta}" class="form-control mr-3"/>
+                <label for="estado" class="mr-2">Estado</label>
+                <select id="estado" name="estado" class="form-control mr-3">
+                    <option value="TODOS" th:selected="${estado.name() == 'TODOS'}">Todos</option>
+                    <option value="ABIERTO" th:selected="${estado.name() == 'ABIERTO'}">Abiertos</option>
+                    <option value="CERRADO" th:selected="${estado.name() == 'CERRADO'}">Cerrados</option>
+                </select>
+                <label for="plato" class="mr-2">Plato</label>
+                <select id="plato" name="plato" class="form-control mr-3">
+                    <option value="">Todos</option>
+                    <option th:each="p : ${platos}" th:value="${p.id}" th:text="${p.nombre}"
+                            th:selected="${platoSeleccionado != null and platoSeleccionado == p.id}"></option>
+                </select>
+                <button type="submit" class="btn btn-primary mr-2">Buscar</button>
+                <a th:href="@{/responsable/pedidos}" class="btn btn-outline-secondary">Limpiar</a>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${error != null}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div th:if="${error == null}" class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <thead>
+                    <tr>
+                        <th>N.º</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th class="text-right">Ítems</th>
+                        <th class="text-right">Platos</th>
+                        <th class="text-right">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="pedido : ${pedidos}">
+                        <td th:text="${pedido.id}"></td>
+                        <td th:text="${#temporals.format(pedido.fechaTransaccion, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td>
+                            <span class="badge badge-secondary" th:if="${pedido.cerrado}">Cerrado</span>
+                            <span class="badge badge-warning" th:unless="${pedido.cerrado}">Abierto</span>
+                        </td>
+                        <td class="text-right" th:text="${pedido.cantidadItems}"></td>
+                        <td class="text-right" th:text="${pedido.cantidadPlatos}"></td>
+                        <td class="text-right" th:text="${#numbers.formatDecimal(pedido.total, 1, 2)}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${pedidos.isEmpty()}" class="text-center text-muted py-4">
+                No hay pedidos que coincidan con los filtros.
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>

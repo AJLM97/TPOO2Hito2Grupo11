@@ -26,9 +26,6 @@ public class EmpleadoDTO {
     private LocalDate fechaNacimiento;
 
     private LocalDate fechaIngreso = LocalDate.now();
-    @Positive(message = "El sueldo base debe ser mayor que cero")
-    @Digits(integer = 9, fraction = 2, message = "El sueldo debe tener como máximo 9 cifras enteras y 2 decimales")
-    private double sueldoBase;
 
     private String emailPersonal;
     private String tipoEmpleado;
@@ -41,7 +38,6 @@ public class EmpleadoDTO {
         this.apellido = apellido;
         this.dni = dni;
         this.fechaNacimiento = fechaNacimiento;
-        this.sueldoBase = sueldoBase;
         this.emailPersonal = emailPersonal;
         this.tipoEmpleado = tipoEmpleado;
         this.turnoTrabajo = turnoTrabajo;

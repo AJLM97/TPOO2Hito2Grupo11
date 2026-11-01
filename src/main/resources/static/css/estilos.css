@@ -189,6 +189,12 @@ main {
     color: var(--dark);
 }
 
+.festival-card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /* Login */
 .login-container {
     min-height: 80vh;

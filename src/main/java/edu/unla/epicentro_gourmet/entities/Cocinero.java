@@ -18,8 +18,8 @@ public class Cocinero extends Empleado{
     private EnumCategoriaCocinero categoria;
 
     public Cocinero(String nombre, String apellido, long dni, LocalDate fechaNacimiento, LocalDate fechaIngreso,
-                    double sueldoBase, UnidadVenta unidad, EnumCategoriaCocinero categoria, Usuario usuario) {
-        super(nombre, apellido, dni, fechaNacimiento, fechaIngreso, sueldoBase, unidad, usuario);
+                    UnidadVenta unidad, EnumCategoriaCocinero categoria, Usuario usuario) {
+        super(nombre, apellido, dni, fechaNacimiento, fechaIngreso, unidad, usuario);
         this.categoria = categoria;
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +15,18 @@ import java.util.Optional;
 public interface IPedidoRepository extends JpaRepository<Pedido, Serializable> {
 
     @EntityGraph(attributePaths = {"items", "items.plato"})
+    List<Pedido> findByUnidadVentaAndCerradoTrueAndFechaTransaccionBetween(UnidadVenta unidadVenta,
+                                                                          LocalDateTime desde, LocalDateTime hasta);
+
+    @EntityGraph(attributePaths = {"items", "items.plato"})
     List<Pedido> findByUnidadVentaOrderByFechaTransaccionDesc(UnidadVenta unidadVenta);
 
     @EntityGraph(attributePaths = {"items", "items.plato"})
     Optional<Pedido> findByIdAndUnidadVenta(Long id, UnidadVenta unidadVenta);
+
+    @EntityGraph(attributePaths = {"items", "items.plato"})
+    List<Pedido> findByUnidadVentaAndCerradoTrue(UnidadVenta unidadVenta);
+
+    @EntityGraph(attributePaths = {"items", "items.plato"})
+    List<Pedido> findByFestival_IdAndCerradoTrue(Long festivalId);
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Plato estrella</h2>
+        <p class="text-muted mb-0">
+            <span th:text="${unidad.nombreComercial}"></span> (<span th:text="${unidad.codigo}"></span>)
+            - Festival: <span th:text="${unidad.festival.nombre}"></span>
+        </p>
+    </div>
+
+    <div th:if="${estrella == null}" class="alert alert-info">
+        Todavía no hay pedidos cerrados en la unidad, por lo que no hay un plato estrella.
+    </div>
+
+    <div th:if="${estrella != null}" class="card">
+        <div class="card-body">
+            <h3 class="mb-3" th:text="${estrella.plato.nombre}"></h3>
+            <table class="table table-striped mb-0">
+                <tbody>
+                <tr>
+                    <th>Unidades pedidas</th>
+                    <td class="text-right" th:text="${estrella.unidadesPedidas}"></td>
+                </tr>
+                <tr>
+                    <th>Precio de venta</th>
+                    <td class="text-right" th:text="${#numbers.formatDecimal(estrella.plato.precioVenta, 1, 2)}"></td>
+                </tr>
+                <tr>
+                    <th>Costo de producción</th>
+                    <td class="text-right" th:text="${#numbers.formatDecimal(estrella.plato.costoProduccion, 1, 2)}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="text-muted small mt-3 mb-0">Se cuentan las unidades de los pedidos cerrados. Si dos platos
+                empatan, se muestra el cargado primero.</p>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>

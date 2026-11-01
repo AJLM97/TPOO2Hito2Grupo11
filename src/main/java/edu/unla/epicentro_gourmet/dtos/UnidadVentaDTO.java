@@ -1,5 +1,8 @@
 package edu.unla.epicentro_gourmet.dtos;
 
+import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
+
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +18,7 @@ public class UnidadVentaDTO {
     private double superficie;
     @NotBlank(message = "El email del responsable es obligatorio")
     private String emailResponsable;
-    @NotBlank(message = "El código es obligatorio")
-    private String codigo;
+    private String codigo = generarCodigo("PD");
     private String tipoUnidadVenta;
 
     private String patente;
@@ -24,8 +26,24 @@ public class UnidadVentaDTO {
 
     private long cantidadDeCarpas;
     private long tiempoMontajeMinutos;
+
+    private String passwordResponsable;
+    private String repetirPassword;
+
+    private static String generarCodigo(String prefijo) {
+        return String.format(Locale.ROOT, "%s-%06d", prefijo, ThreadLocalRandom.current().nextInt(1_000_000));
+    }
+
+    public void setTipoUnidadVenta(String tipoUnidadVenta) {
+        this.tipoUnidadVenta = tipoUnidadVenta;
+        String prefijo = "FOOD_TRUCK".equalsIgnoreCase(tipoUnidadVenta) ? "FT"
+                : "PUESTO_DESARMABLE".equalsIgnoreCase(tipoUnidadVenta) ? "PD" : null;
+        if (prefijo != null && codigo != null && codigo.matches("^(PD|FT)-\\d{6}$")) {
+            codigo = prefijo + codigo.substring(2);
+        }
+    }
     
-    public UnidadVentaDTO(long id, String nombreComercial, double superficie, String emailResponsable, String codigo, String tipoUnidadVenta, String patente, boolean conexionElectrica, long cantidadDeCarpas, long tiempoMontajeMinutos) {
+    public UnidadVentaDTO(long id, String nombreComercial, double superficie, String emailResponsable, String codigo, String tipoUnidadVenta, String patente, boolean conexionElectrica, long cantidadDeCarpas, long tiempoMontajeMinutos, String passwordResponsable, String repetirPassword) {
         this.id = id;
         this.nombreComercial = nombreComercial;
         this.superficie = superficie;
@@ -36,6 +54,8 @@ public class UnidadVentaDTO {
         this.conexionElectrica = conexionElectrica;
         this.cantidadDeCarpas = cantidadDeCarpas;
         this.tiempoMontajeMinutos = tiempoMontajeMinutos;
+        this.passwordResponsable = passwordResponsable;
+        this.repetirPassword = repetirPassword;
     }
 
     @AssertTrue(message = "La patente no tiene un formato válido de Argentina")
@@ -53,4 +73,5 @@ public class UnidadVentaDTO {
     public boolean isTiempoMontajeValido() {
         return !"PUESTO_DESARMABLE".equalsIgnoreCase(tipoUnidadVenta) || tiempoMontajeMinutos > 0;
     }
+
 }

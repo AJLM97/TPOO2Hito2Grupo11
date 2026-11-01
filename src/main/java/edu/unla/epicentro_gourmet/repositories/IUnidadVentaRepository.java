@@ -1,5 +1,6 @@
 package edu.unla.epicentro_gourmet.repositories;
 
+import edu.unla.epicentro_gourmet.dtos.RankingUnidadVentaDTO;
 import edu.unla.epicentro_gourmet.entities.UnidadVenta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +21,21 @@ public interface IUnidadVentaRepository extends JpaRepository<UnidadVenta, Seria
 
     @Query("SELECT uv FROM UnidadVenta uv JOIN uv.festival f JOIN uv.responsable r WHERE f.id = :idFestival AND r.activo = true")
     List<UnidadVenta> findUnidadesDeVentaFromFestival(@Param("idFestival") long idFestival);
+
+    @Query("""
+            SELECT new edu.unla.epicentro_gourmet.dtos.RankingUnidadVentaDTO(
+                uv.nombreComercial, uv.codigo,
+                COALESCE(SUM(i.cantidad * p.precioVenta), 0.0))
+            FROM UnidadVenta uv
+            JOIN uv.festival f
+            LEFT JOIN uv.pedidos pedido ON pedido.cerrado = true
+            LEFT JOIN pedido.items i
+            LEFT JOIN i.plato p
+            WHERE f.id = :festivalId
+            GROUP BY uv.id, uv.nombreComercial, uv.codigo
+            ORDER BY COALESCE(SUM(i.cantidad * p.precioVenta), 0.0) DESC, uv.nombreComercial ASC
+            """)
+    List<RankingUnidadVentaDTO> findRankingByRecaudacion(@Param("festivalId") long festivalId);
 
     Optional<UnidadVenta> findById(Long id);
 
