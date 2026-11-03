@@ -1,12 +1,14 @@
 package edu.unla.epicentro_gourmet.services.implementation;
 
 import edu.unla.epicentro_gourmet.dtos.FiltroEmpleadoDTO;
+import edu.unla.epicentro_gourmet.dtos.InformacionEmpleadoDTO;
 import edu.unla.epicentro_gourmet.entities.*;
 import edu.unla.epicentro_gourmet.repositories.IEmpleadoRepository;
 import edu.unla.epicentro_gourmet.services.EnumResultadoAltaEmpleado;
 import edu.unla.epicentro_gourmet.services.IEmpleadoService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -190,5 +193,62 @@ public class EmpleadoService implements IEmpleadoService {
             case "CAJERO" -> e instanceof Cajero;
             default -> true;
         };
+    }
+    @Override
+    @Transactional
+    public Optional<InformacionEmpleadoDTO> obtenerInformacion(String email) {
+        return empleadoRepository.findByUsuario_EmailAndActivoTrue(email)
+                .map(this::armarInformacion);
+    }
+
+    private InformacionEmpleadoDTO armarInformacion(Empleado empleado) {
+        String rol = "Empleado";
+        String detalleRol = "-";
+        if (empleado instanceof Cocinero cocinero) {
+            rol = "Cocinero";
+            detalleRol = cocinero.getCategoria().name();
+        } else if (empleado instanceof Cajero cajero) {
+            rol = "Cajero";
+            detalleRol = cajero.getTurnoTrabajo().name();
+        }
+
+        InformacionEmpleadoDTO.InformacionEmpleadoDTOBuilder info = InformacionEmpleadoDTO.builder()
+                .nombre(empleado.getNombre())
+                .apellido(empleado.getApellido())
+                .dni(empleado.getDni())
+                .fechaNacimiento(empleado.getFechaNacimiento())
+                .fechaIngreso(empleado.getFechaIngreso())
+                .antiguedadAnios(Period.between(empleado.getFechaIngreso(), LocalDate.now()).getYears())
+                .rol(rol)
+                .detalleRol(detalleRol);
+
+        if (empleado.getUnidad() != null) {
+            UnidadVenta unidad = (UnidadVenta) Hibernate.unproxy(empleado.getUnidad());
+            Festival festival = (Festival) Hibernate.unproxy(unidad.getFestival());
+
+            info.unidadNombre(unidad.getNombreComercial())
+                    .unidadCodigo(unidad.getCodigo())
+                    .tipoUnidad(tipoDeUnidad(unidad))
+                    .superficie(unidad.getSuperficie())
+                    .festivalNombre(festival.getNombre())
+                    .temporada(festival.getTemporada())
+                    .festivalInicio(festival.getFechaInicio())
+                    .festivalFin(festival.getFechaFin())
+                    .estadoFestival(estadoDelFestival(festival));
+        }
+        return info.build();
+    }
+
+    private String tipoDeUnidad(UnidadVenta unidad) {
+        if (unidad instanceof FoodTruck) return "Food Truck";
+        if (unidad instanceof PuestoDesarmable) return "Puesto Desarmable";
+        return "-";
+    }
+
+    private String estadoDelFestival(Festival festival) {
+        LocalDate hoy = LocalDate.now();
+        if (hoy.isBefore(festival.getFechaInicio())) return "Próximo";
+        if (hoy.isAfter(festival.getFechaFin())) return "Finalizado";
+        return "En curso";
     }
 }
