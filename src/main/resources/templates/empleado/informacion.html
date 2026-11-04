@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Mi información</h2>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Datos personales</h5>
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Nombre</dt>
+                <dd class="col-sm-9" th:text="${info.nombre + ' ' + info.apellido}"></dd>
+                <dt class="col-sm-3">DNI</dt>
+                <dd class="col-sm-9" th:text="${info.dni}"></dd>
+                <dt class="col-sm-3">Fecha de nacimiento</dt>
+                <dd class="col-sm-9" th:text="${#temporals.format(info.fechaNacimiento, 'dd/MM/yyyy')}"></dd>
+                <dt class="col-sm-3">Fecha de ingreso</dt>
+                <dd class="col-sm-9" th:text="${#temporals.format(info.fechaIngreso, 'dd/MM/yyyy')}"></dd>
+                <dt class="col-sm-3">Antigüedad</dt>
+                <dd class="col-sm-9" th:text="${info.antiguedadAnios + (info.antiguedadAnios == 1 ? ' año' : ' años')}"></dd>
+                <dt class="col-sm-3">Rol</dt>
+                <dd class="col-sm-9" th:text="${info.rol + ' (' + info.detalleRol + ')'}"></dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="alert alert-info" th:if="${info.festivalNombre == null}">
+        Todavía no tenés una unidad de venta asignada.
+    </div>
+
+    <div class="row" th:unless="${info.festivalNombre == null}">
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Festival</h5>
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Nombre</dt>
+                        <dd class="col-sm-8" th:text="${info.festivalNombre}"></dd>
+                        <dt class="col-sm-4">Temporada</dt>
+                        <dd class="col-sm-8" th:text="${info.temporada}"></dd>
+                        <dt class="col-sm-4">Desde</dt>
+                        <dd class="col-sm-8" th:text="${#temporals.format(info.festivalInicio, 'dd/MM/yyyy')}"></dd>
+                        <dt class="col-sm-4">Hasta</dt>
+                        <dd class="col-sm-8" th:text="${#temporals.format(info.festivalFin, 'dd/MM/yyyy')}"></dd>
+                        <dt class="col-sm-4">Estado</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge badge-success" th:if="${info.estadoFestival == 'En curso'}">En curso</span>
+                            <span class="badge badge-warning" th:if="${info.estadoFestival == 'Próximo'}">Próximo</span>
+                            <span class="badge badge-secondary" th:if="${info.estadoFestival == 'Finalizado'}">Finalizado</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Unidad de venta</h5>
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Nombre</dt>
+                        <dd class="col-sm-8" th:text="${info.unidadNombre}"></dd>
+                        <dt class="col-sm-4">Código</dt>
+                        <dd class="col-sm-8" th:text="${info.unidadCodigo}"></dd>
+                        <dt class="col-sm-4">Tipo</dt>
+                        <dd class="col-sm-8" th:text="${info.tipoUnidad}"></dd>
+                        <dt class="col-sm-4">Superficie</dt>
+                        <dd class="col-sm-8" th:text="${#numbers.formatDecimal(info.superficie, 1, 2) + ' m²'}"></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>

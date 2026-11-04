@@ -1,5 +1,6 @@
 package edu.unla.epicentro_gourmet.controllers;
 
+import edu.unla.epicentro_gourmet.dtos.InformacionEmpleadoDTO;
 import edu.unla.epicentro_gourmet.dtos.ItemPedidoDTO;
 import edu.unla.epicentro_gourmet.entities.Cajero;
 import edu.unla.epicentro_gourmet.entities.Empleado;
@@ -177,5 +178,14 @@ public class EmpleadoController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "El cajero no tiene una unidad de venta asignada");
         }
         return empleado.getUnidad();
+    }
+
+    @GetMapping("/informacion")
+    public String showInformacion(Model model, Authentication authentication) {
+        InformacionEmpleadoDTO informacion = empleadoService.obtenerInformacion(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "No se encontró un empleado activo para este usuario"));
+        model.addAttribute("info", informacion);
+        return ViewRouteHelper.EMPLEADO_INFORMACION;
     }
 }
