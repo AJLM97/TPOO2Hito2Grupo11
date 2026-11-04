@@ -34,6 +34,7 @@ public class ViewRouteHelper {
     // EMPLEADO
     public final static String CAJERO_PEDIDOS = "empleado/pedidos";
     public final static String CAJERO_PEDIDO_FORM = "empleado/pedidos-form";
+    public final static String EMPLEADO_INFORMACION = "empleado/informacion";
 
     /**** REDIRECTS ****/
     public final static String USER_LOGIN = "user/login";
