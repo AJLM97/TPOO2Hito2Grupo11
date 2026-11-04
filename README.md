@@ -73,6 +73,7 @@ Proyecto desarrollado para la asignatura [Orientación a Objetos 2] - [2026 - Se
 | `CUGestionPedidosThomasVogt` | Gestión de pedidos y sus ítems por parte del personal de la unidad. | Thomas Gebhard Vogt ([@Thomy98](https://github.com/Thomy98)) |
 | `CUGestionarPlatosThomasVogt` | Alta, consulta, actualización y baja de platos de una unidad. | Thomas Gebhard Vogt ([@Thomy98](https://github.com/Thomy98)) |
 | `CUGestionarFestivalesThomasVogt` | Alta, consulta, actualización y baja de festivales. | Thomas Gebhard Vogt ([@Thomy98](https://github.com/Thomy98)) |
+| `CURegistrarUsuarioAlejandroLedesma` | Registro de usuarios de tipo responsable (cuando se crea una unidad de venta) y empleado. | Alejandro Javier Ledesma Miño ([@AJLM97](https://github.com/AJLM97)) |
 
 ## Casos de uso personales y responsables
 

@@ -32,7 +32,7 @@ public class EmpleadoDTO {
     private String turnoTrabajo;
     private String categoriaCocinero;
 
-    public EmpleadoDTO(long id, String nombre, String apellido, long dni, LocalDate fechaNacimiento, double sueldoBase, String emailPersonal, String tipoEmpleado, String turnoTrabajo, String categoriaCocinero) {
+    public EmpleadoDTO(long id, String nombre, String apellido, long dni, LocalDate fechaNacimiento, String emailPersonal, String tipoEmpleado, String turnoTrabajo, String categoriaCocinero) {
         this.setId(id);
         this.nombre = nombre;
         this.apellido = apellido;
