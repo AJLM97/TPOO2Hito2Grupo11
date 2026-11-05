@@ -74,6 +74,9 @@ Proyecto desarrollado para la asignatura [Orientación a Objetos 2] - [2026 - Se
 | `CUGestionarPlatosThomasVogt` | Alta, consulta, actualización y baja de platos de una unidad. | Thomas Gebhard Vogt ([@Thomy98](https://github.com/Thomy98)) |
 | `CUGestionarFestivalesThomasVogt` | Alta, consulta, actualización y baja de festivales. | Thomas Gebhard Vogt ([@Thomy98](https://github.com/Thomy98)) |
 | `CURegistrarUsuarioAlejandroLedesma` | Registro de usuarios de tipo responsable (cuando se crea una unidad de venta) y empleado. | Alejandro Javier Ledesma Miño ([@AJLM97](https://github.com/AJLM97)) |
+| `CUFiltrarEmpleadosArianLeal` | Agrega un filtro para que el responsable consulte variables de los empleados. | Arian Gabriel Leal ([@ari2709](https://github.com/ari2709)) |
+| `CUInformacionEmpArianLeal` | Muestra la información principal de un empleado como Unidad de venta y festival al que pertenece. | Arian Gabriel Leal ([@ari2709](https://github.com/ari2709)) |
+| `CUReciboSueldoArianLeal` | Genera un archivo PDF con el recibo de sueldo del empleado. | Arian Gabriel Leal ([@ari2709](https://github.com/ari2709)) |
 
 ## Casos de uso personales y responsables
 
@@ -83,3 +86,5 @@ Proyecto desarrollado para la asignatura [Orientación a Objetos 2] - [2026 - Se
 | `CUPuntoEquilibrioThomasVogt` | Indica si la unidad ya cubrió el canon y los sueldos con su ganancia bruta (ventas cerradas menos costo de los platos), con el porcentaje cubierto, lo que falta ganar y una estimación de lo que falta vender | Thomas Gebhard Vogt ([@Thomy98](https://github.com/Thomy98)) |
 | `CUConsultarPlatosMasRentablesAlejandroLedesma` | Lista platos ordenados por rentabilidad en una unidad de venta. | Alejandro Javier Ledesma Miño ([@AJLM97](https://github.com/AJLM97)) |
 | `CURankingConcurrenciaPorTemporadaAlejandroLedesma` | Ranking de festivales por temporada según pedidos cerrados, usados como estimación de concurrencia; muestra también el año del festival. | Alejandro Javier Ledesma Miño ([@AJLM97](https://github.com/AJLM97)) |
+| `CUBusquedaPlatosArianLeal` | Agrega un filtro para que el responsable consulte variables de los platos. | Arian Gabriel Leal ([@ari2709](https://github.com/ari2709)) |
+| `CUPosicionRankingArianLeal` | Muestra al responsable la posición de su unidad de venta en el ranking de rentabilidad. | Arian Gabriel Leal ([@ari2709](https://github.com/ari2709)) |
