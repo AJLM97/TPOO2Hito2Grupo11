@@ -24,6 +24,8 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
+import java.text.NumberFormat;
 
 @Controller
 @PreAuthorize("hasAuthority('EMPLEADO')")
@@ -114,6 +116,42 @@ public class EmpleadoController {
                               RedirectAttributes redirectAttributes) {
         EnumResultadoPedido resultado = pedidoService.cerrar(unidadDelCajero(authentication), id);
         return redirigir(resultado, id, "El pedido se cerró correctamente", redirectAttributes);
+    }
+
+    @PostMapping ("/pedidos/cerrar-caja")
+    public String closeCaja(Authentication authentication, RedirectAttributes redirectAttributes){
+        UnidadVenta unidadCajero = unidadDelCajero(authentication);
+        LocalDate fechaCierre = LocalDate.now();
+        double dineroGanado = 0;
+        long id = 0;
+        int pedidosHoy = 0;
+        int cerrados = 0;
+        int errores = 0;
+
+        for(Pedido pedido: pedidoService.findByUnidadVenta(unidadCajero)){
+            id = pedido.getId();
+            if((pedido.isCerrado() == true) && (pedido.getFechaTransaccion().toLocalDate().equals(fechaCierre))){
+                dineroGanado += pedido.getTotal();
+                pedidosHoy++;
+            }
+            if(pedido.isCerrado() == false){
+                EnumResultadoPedido resultadoCancelar = pedidoService.cancelar(unidadCajero, id);
+                if (resultadoCancelar == EnumResultadoPedido.OK){
+                    cerrados++;
+                }else{
+                    errores++;
+                }
+            }
+        }
+        redirectAttributes.addFlashAttribute("mensaje", "Se recaudaron $" + String.format("%.2f", dineroGanado)
+                + " de " + pedidosHoy + " pedidos hoy");
+
+        if(cerrados > 0 || errores > 0){
+            redirectAttributes.addFlashAttribute("error", "Se cancelaron " + cerrados
+                    + " pedidos que quedaron abiertos. Ocurrieron " + errores + " errores");
+        }
+
+        return REDIRECT_PEDIDOS;
     }
 
     @PostMapping("/pedidos/{id}/cancelar")
