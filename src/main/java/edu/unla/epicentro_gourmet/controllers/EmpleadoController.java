@@ -8,12 +8,9 @@ import edu.unla.epicentro_gourmet.entities.ItemPedido;
 import edu.unla.epicentro_gourmet.entities.Pedido;
 import edu.unla.epicentro_gourmet.entities.UnidadVenta;
 import edu.unla.epicentro_gourmet.helpers.ViewRouteHelper;
-import edu.unla.epicentro_gourmet.services.EnumResultadoPedido;
-import edu.unla.epicentro_gourmet.services.IEmpleadoService;
-import edu.unla.epicentro_gourmet.services.IPedidoService;
-import edu.unla.epicentro_gourmet.services.IPlatoService;
+import edu.unla.epicentro_gourmet.services.*;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -38,17 +35,19 @@ public class EmpleadoController {
     private final IEmpleadoService empleadoService;
     private final IPedidoService pedidoService;
     private final IPlatoService platoService;
+    private final IReciboSueldoService reciboSueldoService;
 
     public EmpleadoController(IEmpleadoService empleadoService, IPedidoService pedidoService,
-                              IPlatoService platoService) {
+                              IPlatoService platoService, IReciboSueldoService reciboSueldoService) {
         this.empleadoService = empleadoService;
         this.pedidoService = pedidoService;
         this.platoService = platoService;
+        this.reciboSueldoService = reciboSueldoService;
     }
 
     @GetMapping("")
     public RedirectView index() {
-        return new RedirectView(ViewRouteHelper.REDIRECT_CAJERO_PEDIDOS);
+        return new RedirectView(ViewRouteHelper.REDIRECT_EMPLEADO_INFORMACION);
     }
 
     @GetMapping("/pedidos")
@@ -187,5 +186,17 @@ public class EmpleadoController {
                         "No se encontró un empleado activo para este usuario"));
         model.addAttribute("info", informacion);
         return ViewRouteHelper.EMPLEADO_INFORMACION;
+    }
+
+    @GetMapping("/informacion/recibo")
+    public ResponseEntity<byte[]> descargarRecibo(Authentication authentication) {
+        byte[] pdf = reciboSueldoService.generarRecibo(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "No hay un recibo de sueldo disponible para tu unidad y festival"));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.attachment().filename("recibo-de-sueldo.pdf").build().toString())
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
     }
 }

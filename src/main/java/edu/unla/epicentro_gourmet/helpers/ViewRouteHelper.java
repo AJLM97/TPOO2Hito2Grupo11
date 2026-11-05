@@ -42,4 +42,5 @@ public class ViewRouteHelper {
 
     public final static String REDIRECT_ADMIN_FESTIVALES = "/admin/festivales";
     public final static String REDIRECT_CAJERO_PEDIDOS = "/empleado/pedidos";
+    public final static String REDIRECT_EMPLEADO_INFORMACION = "/empleado/informacion";
 }

@@ -54,6 +54,9 @@
                             <span class="badge badge-secondary" th:if="${info.estadoFestival == 'Finalizado'}">Finalizado</span>
                         </dd>
                     </dl>
+                    <a class="btn btn-primary mt-3" th:href="@{/empleado/informacion/recibo}">
+                        Descargar recibo de sueldo (PDF)
+                    </a>
                 </div>
             </div>
         </div>

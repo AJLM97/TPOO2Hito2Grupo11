@@ -42,7 +42,7 @@ public class UserController {
                 case "RESPONSABLE":
                     return "redirect:/responsable/empleados";
                 case "EMPLEADO":
-                    return "redirect:/empleado/pedidos";
+                    return "redirect:" + ViewRouteHelper.REDIRECT_EMPLEADO_INFORMACION;
             }
         }
 
