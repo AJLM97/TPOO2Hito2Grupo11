@@ -44,8 +44,9 @@
         </select>
     </div>
     <div class="mb-3">
-        <label for="costoMontaje" class="col-form-label">Costo por montaje (por minuto)</label>
+        <label for="costoMontaje" class="col-form-label">Descuento por tiempo de montaje (por minuto)</label>
         <input type="number" step="0.01" min="0" id="costoMontaje" th:field="*{costos.costoMontaje}" class="form-control" required/>
+        <small class="form-text text-muted">La tarifa se multiplica por los minutos de montaje del puesto y se resta del canon.</small>
         <select th:field="*{costos.aplicacionCostoMontaje}" class="form-select mt-1" aria-label="Se aplica a">
             <option value="TODAS">Se aplica a todas las unidades</option>
             <option value="FOOD_TRUCK">Se aplica solo a Food Trucks</option>

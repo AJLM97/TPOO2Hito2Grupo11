@@ -16,8 +16,8 @@ public class SolicitudCostos {
     @PositiveOrZero(message = "El costo por superficie no puede ser negativo")
     private Float costoSuperficie;
 
-    @NotNull(message = "El costo por montaje es obligatorio")
-    @PositiveOrZero(message = "El costo por montaje no puede ser negativo")
+    @NotNull(message = "El descuento por tiempo de montaje es obligatorio")
+    @PositiveOrZero(message = "El descuento por tiempo de montaje no puede ser negativo")
     private Float costoMontaje;
 
     @NotNull(message = "El plus por electricidad es obligatorio")
@@ -47,7 +47,7 @@ public class SolicitudCostos {
     @NotNull(message = "Debe indicar a qué unidades aplica el costo por superficie")
     private EnumAplicacionCosto aplicacionCostoSuperficie = EnumAplicacionCosto.TODAS;
 
-    @NotNull(message = "Debe indicar a qué unidades aplica el costo por montaje")
+    @NotNull(message = "Debe indicar a qué unidades aplica el descuento por tiempo de montaje")
     private EnumAplicacionCosto aplicacionCostoMontaje = EnumAplicacionCosto.PUESTO_DESARMABLE;
 
     @NotNull(message = "Debe indicar a qué unidades aplica el plus por electricidad")
