@@ -1,6 +1,7 @@
 package edu.unla.epicentro_gourmet.controllers;
 
 import edu.unla.epicentro_gourmet.dtos.EmpleadoDTO;
+import edu.unla.epicentro_gourmet.dtos.FiltroPlatoDTO;
 import edu.unla.epicentro_gourmet.dtos.PlatoDTO;
 import edu.unla.epicentro_gourmet.entities.*;
 import edu.unla.epicentro_gourmet.helpers.ViewRouteHelper;
@@ -182,12 +183,15 @@ public class ResponsableController {
     }
 
     @GetMapping("/platos")
-    public ModelAndView showAllPlato(Authentication authentication) {
+    public ModelAndView showAllPlato(@Valid @ModelAttribute("filtro") FiltroPlatoDTO filtro,
+                                     BindingResult result, Authentication authentication) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.RESPONSABLE_PLATOS);
         Optional<UnidadVenta> unidadVentaOptional = unidadVentaService.getUnidadVentaFromResponsableEmail(authentication.getName());
         if (unidadVentaOptional.isPresent()) {
             UnidadVenta unidadVenta = unidadVentaOptional.get();
-            mAV.addObject("platos", platoService.findByUnidadVenta(unidadVenta));
+            mAV.addObject("platos", result.hasErrors()
+                    ? platoService.findByUnidadVenta(unidadVenta)
+                    : platoService.filtrar(unidadVenta, filtro));
         }
         return mAV;
     }

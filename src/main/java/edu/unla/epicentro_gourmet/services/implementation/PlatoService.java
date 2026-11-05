@@ -1,5 +1,6 @@
 package edu.unla.epicentro_gourmet.services.implementation;
 
+import edu.unla.epicentro_gourmet.dtos.FiltroPlatoDTO;
 import edu.unla.epicentro_gourmet.entities.Plato;
 import edu.unla.epicentro_gourmet.entities.UnidadVenta;
 import edu.unla.epicentro_gourmet.repositories.IPlatoRepository;
@@ -106,5 +107,14 @@ public class PlatoService implements IPlatoService {
             plato.setActivo(false);
             platoRepository.save(plato);
         });
+    }
+
+    @Override
+    public List<Plato> filtrar(UnidadVenta unidadVenta, FiltroPlatoDTO filtro) {
+        String nombre = (filtro.getNombre() == null || filtro.getNombre().isBlank())
+                ? null
+                : filtro.getNombre().trim();
+        return platoRepository.filtrar(unidadVenta, filtro.getPrecioMin(), filtro.getPrecioMax(),
+                filtro.getMargenMin(), nombre);
     }
 }
