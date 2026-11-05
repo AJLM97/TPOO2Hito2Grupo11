@@ -30,6 +30,7 @@ public class ViewRouteHelper {
     public final static String RESPONSABLE_PLATOS_RENTABLES = "responsable/reporte-platos-rentables";
     public final static String RESPONSABLE_PLATO_EDIT = "responsable/platos-edit";
     public final static String RESPONSABLE_CANON = "responsable/canon";
+    public final static String RESPONSABLE_POSICION_RANKING = "responsable/reporte-posicion-ranking";
 
     // EMPLEADO
     public final static String CAJERO_PEDIDOS = "empleado/pedidos";
