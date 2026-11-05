@@ -79,8 +79,7 @@ Proyecto desarrollado para la asignatura [Orientación a Objetos 2] - [2026 - Se
 | `CUFiltrarEmpleadosArianLeal` | Agrega un filtro para que el responsable consulte variables de los empleados. | Arian Gabriel Leal ([@ari2709](https://github.com/ari2709)) | [#29](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/29) |
 | `CUInformacionEmpArianLeal` | Muestra la información principal de un empleado como Unidad de venta y festival al que pertenece. | Arian Gabriel Leal ([@ari2709](https://github.com/ari2709)) | [#33](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/33) |
 | `CUReciboSueldoArianLeal` | Genera un archivo PDF con el recibo de sueldo del empleado. | Arian Gabriel Leal ([@ari2709](https://github.com/ari2709)) | [#34](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/34) |
-| `CUCerrarCajaDelDiaJuanBoullon` | Genera un archivo PDF con el recibo de sueldo del empleado. | Arian Gabriel Leal ([@ari2709](https://github.com/ari2709)) | [#34](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/34) |
-| `CUPosicionRankingArianLeal` | Cajero cierra la caja del día, eliminando pedidos abiertos y mostrando la recaudación del día. | Juan Bautista Boullon ([@JuanBa7](https://github.com/JuanBa7)) | [#39](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/39) |
+| `CUCerrarCajaDelDiaJuanBoullon` | Cajero cierra la caja del día, eliminando pedidos abiertos y mostrando la recaudación del día. | Juan Bautista Boullon ([@JuanBa7](https://github.com/JuanBa7)) | [#39](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/39) |
 
 ## Casos de uso personales y responsables
 
@@ -91,3 +90,4 @@ Proyecto desarrollado para la asignatura [Orientación a Objetos 2] - [2026 - Se
 | `CUConsultarPlatosMasRentablesAlejandroLedesma` | Lista platos ordenados por rentabilidad en una unidad de venta. | Alejandro Javier Ledesma Miño ([@AJLM97](https://github.com/AJLM97)) | [#26](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/26) |
 | `CURankingConcurrenciaPorTemporadaAlejandroLedesma` | Ranking de festivales por temporada según pedidos cerrados, usados como estimación de concurrencia; muestra también el año del festival. | Alejandro Javier Ledesma Miño ([@AJLM97](https://github.com/AJLM97)) | [#28](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/28) |
 | `CUBusquedaPlatosArianLeal` | Agrega un filtro para que el responsable consulte variables de los platos. | Arian Gabriel Leal ([@ari2709](https://github.com/ari2709)) | [#37](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/37) |
+| `CUPosicionRankingArianLeal` | Muestra la posición de la unidad de venta en el ranking de rentabilidiad. | Arian Gabriel Leal ([@ari2709](https://github.com/ari2709)) | [#38](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/38) |
