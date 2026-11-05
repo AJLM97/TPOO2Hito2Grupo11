@@ -6,7 +6,7 @@
 
 <main class="container py-4">
     <div class="page-header d-flex justify-content-between align-items-center">
-        <h2>Empleados</h2>
+        <h2 th:text="|${nombreComercial} - Empleados|">Empleados</h2>
         <a th:href="@{/responsable/empleados/nuevo}" class="btn btn-primary">Agregar Empleado</a>
     </div>
 

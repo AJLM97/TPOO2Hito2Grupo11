@@ -75,6 +75,7 @@ public class ResponsableController {
                 ? empleadoService.findByUnidadVenta(unidadVenta)   // filtro inválido: muestra todos + el error
                 : empleadoService.filtrar(unidadVenta, filtro);
         mAV.addObject("empleados", empleados);
+        mAV.addObject("nombreComercial", unidadVenta.getNombreComercial());
         return mAV;
     }
 
