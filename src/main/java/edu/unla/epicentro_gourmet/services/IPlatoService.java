@@ -1,5 +1,6 @@
 package edu.unla.epicentro_gourmet.services;
 
+import edu.unla.epicentro_gourmet.dtos.FiltroPlatoDTO;
 import edu.unla.epicentro_gourmet.entities.Plato;
 import edu.unla.epicentro_gourmet.entities.UnidadVenta;
 
@@ -25,4 +26,6 @@ public interface IPlatoService {
     EnumResultadoGuardadoPlato actualizar(UnidadVenta unidadVenta, Plato datos);
 
     public void logicalDelete(UnidadVenta unidadVenta, long id);
+
+    public List<Plato> filtrar(UnidadVenta unidadVenta, FiltroPlatoDTO filtro);
 }
