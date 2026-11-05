@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Posición en el ranking</h2>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <p class="mb-1"><strong th:text="${posicion.nombreUnidad}"></strong>
+                (<span th:text="${posicion.codigoUnidad}"></span>)</p>
+            <p class="text-muted">Festival: <span th:text="${posicion.nombreFestival}"></span></p>
+
+            <h3 class="mb-1">
+                Puesto <span th:text="${posicion.puesto}"></span>
+                de <span th:text="${posicion.totalUnidades}"></span>
+            </h3>
+            <p class="text-muted" th:if="${posicion.empatada}">
+                Compartís este puesto con otra unidad que tiene la misma recaudación.
+            </p>
+            <div class="alert alert-success" th:if="${posicion.lider}">
+                ¡Tu unidad está en el primer puesto!
+            </div>
+
+            <table class="table table-striped mb-0">
+                <tbody>
+                <tr>
+                    <th>Tu recaudación</th>
+                    <td class="text-right" th:text="${#numbers.formatDecimal(posicion.recaudacion, 1, 2)}"></td>
+                </tr>
+                <tr th:unless="${posicion.lider}">
+                    <th>Te faltan para alcanzar al líder</th>
+                    <td class="text-right" th:text="${#numbers.formatDecimal(posicion.diferenciaConLider, 1, 2)}"></td>
+                </tr>
+                <tr th:unless="${posicion.lider}">
+                    <th>Te faltan para superar a la unidad que tenés arriba</th>
+                    <td class="text-right" th:text="${#numbers.formatDecimal(posicion.diferenciaConSuperior, 1, 2)}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="text-muted small mt-3 mb-0">
+                Ranking por recaudación del festival. Solo se cuentan los pedidos cerrados.
+            </p>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>
