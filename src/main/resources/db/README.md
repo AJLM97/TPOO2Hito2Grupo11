@@ -23,7 +23,7 @@ Los cuatro usuarios del seed comparten la contraseña `DemoEpicentro2026!`. El v
 ## Reglas de aplicación de costos
 
 - `costoSuperficie`: alcance inicial `TODAS`; se calcula por m² para cada unidad incluida.
-- `costoMontaje`: alcance inicial `PUESTO_DESARMABLE`; se aplica al montaje del puesto.
+- `costoMontaje`: tarifa por minuto del descuento por tiempo de montaje, con alcance inicial `PUESTO_DESARMABLE`; se multiplica por los minutos del puesto y se resta del canon.
 - `plusElectricidad`: alcance inicial `FOOD_TRUCK`; además, solo corresponde a food trucks con `conexion_electrica = true`.
 - `sueldoBase`, `plusAntiguedad` y adicionales de cocina se usan en liquidaciones de empleados, no en el canon de la unidad.
 
