@@ -73,6 +73,7 @@
                         <span th:text="${username != null ? username : 'Usuario'}">Usuario</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" th:href="@{/usuario/cambiar-password}">Cambiar contraseña</a>
                         <form th:action="@{/logout}" method="post">
                             <button type="submit" class="dropdown-item">Cerrar sesion</button>
                         </form>
