@@ -90,6 +90,11 @@ public class UserController {
             return "user/cambiar-password";
         }
 
+        if(contraseniaActual.equals(contraseniaNueva)){
+            model.addAttribute("error", "La contraseña nueva no puede ser igual a la actual.");
+            return "user/cambiar-password";
+        }
+
         if(!contraseniaNueva.equals(repetirContraseniaNueva)){
             model.addAttribute("error", "La contraseña nueva y su repetición no coinciden.");
             return "user/cambiar-password";
