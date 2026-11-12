@@ -56,12 +56,18 @@ public class EmpleadoController {
     public String showAllPedido(Model model, Authentication authentication) {
         UnidadVenta unidad = unidadDelCajero(authentication);
         model.addAttribute("pedidos", pedidoService.findByUnidadVenta(unidad));
+        model.addAttribute("puedeAbrirPedidos", unidad.getFestival().getFechaFin().isAfter(LocalDate.now()));
         return ViewRouteHelper.CAJERO_PEDIDOS;
     }
 
     @PostMapping("/pedidos/abrir")
-    public String openPedido(Authentication authentication) {
-        Pedido pedido = pedidoService.abrir(unidadDelCajero(authentication));
+    public String openPedido(Authentication authentication, RedirectAttributes redirectAttributes) {
+        UnidadVenta unidad = unidadDelCajero(authentication);
+        if(!unidad.getFestival().getFechaFin().isAfter(LocalDate.now())){
+            redirectAttributes.addFlashAttribute("error", "No se pueden abrir pedidos en festivales concluidos");
+            return REDIRECT_PEDIDOS;
+        }
+        Pedido pedido = pedidoService.abrir(unidad);
         return "redirect:/empleado/pedidos/" + pedido.getId();
     }
 
