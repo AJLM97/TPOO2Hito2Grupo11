@@ -151,7 +151,7 @@ public class EmpleadoService implements IEmpleadoService {
         mensaje.setSubject("Bienvenido a Epicentro Gourmet - Tus Credenciales");
         mensaje.setText("Hola " + nombre + ",\n\nTu cuenta de staff ha sido reactivada con éxito.\n" +
                 "Correo de acceso: " + emailUsuario + "\n" +
-                "Contraseña: " + password);
+                "Contraseña: " + password + "\n\nPor seguridad, recordá cambiarla en tu primer ingreso.");
         mailSender.send(mensaje);
     }
 
@@ -161,7 +161,7 @@ public class EmpleadoService implements IEmpleadoService {
         mensaje.setSubject("Bienvenido a Epicentro Gourmet - Tus Credenciales");
         mensaje.setText("Hola " + nombre + ",\n\nTu cuenta de staff ha sido creada con éxito.\n" +
                 "Correo de acceso: " + emailUsuario + "\n" +
-                "Contraseña: " + password);
+                "Contraseña: " + password + "\n\nPor seguridad, recordá cambiarla en tu primer ingreso.");
         mailSender.send(mensaje);
     }
 
