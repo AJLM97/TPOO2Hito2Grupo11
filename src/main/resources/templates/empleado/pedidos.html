@@ -11,7 +11,7 @@
               onsubmit="return confirm('¿Seguro de cerrar la caja del día? Se eliminarán todos los pedidos abiertos')">
             <button type="submit" class="btn btn-success">Cerrar Caja</button>
         </form>
-        <form th:action="@{/empleado/pedidos/abrir}" method="post">
+        <form th:if="${puedeAbrirPedidos}" th:action="@{/empleado/pedidos/abrir}" method="post">
             <button type="submit" class="btn btn-primary">Nuevo Pedido</button>
         </form>
     </div>
