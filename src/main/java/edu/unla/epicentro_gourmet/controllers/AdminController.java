@@ -131,6 +131,13 @@ public class AdminController {
         return mAV;
     }
 
+    @GetMapping("/promedio-recaudacion-temporada")
+    public ModelAndView showPromedioRecaudacionTemporada(){
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.ADMIN_PROMEDIO_RECAUDACION_TEMPORADA);
+        mAV.addObject("resumen", reporteVentaService.recaudacionPorTemporada());
+        return mAV;
+    }
+
     @GetMapping("/festivales/nuevo")
     public ModelAndView showFormFestival() {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.ADMIN_REGISTRO_FESTIVAL);

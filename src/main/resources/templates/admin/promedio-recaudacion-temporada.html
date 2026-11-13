@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div class="page-header">
+        <h2>Promedio de recaudación por temporada</h2>
+        <p class="text-muted">
+            Se consideran las recaudaciones de pedidos cerrados de festivales concluidos.
+        </p>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <tread>
+                        <tr>
+                            <th>Temporada del festival</th>
+                            <th class="text-end">Promedio recaudado</th>
+                            <th>Festival con mayor recaudacion</th>
+                        </tr>
+                    </tread>
+                    <tbody>
+                    <tr th:each="fila : ${resumen}">
+                        <td th:text="${fila.temporada}"></td>
+                        <td class="text-end"
+                            th:text="${'$ ' + #numbers.formatDecimal(fila.promedioRecaudado, 1, 'POINT', 2, 'COMMA')}">
+                        </td>
+                        <td th:text="${fila.festivalMayorRecaudacion}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>

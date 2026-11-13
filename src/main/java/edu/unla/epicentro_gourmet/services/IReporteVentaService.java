@@ -2,6 +2,7 @@ package edu.unla.epicentro_gourmet.services;
 
 import edu.unla.epicentro_gourmet.dtos.ReporteVentaDTO;
 import edu.unla.epicentro_gourmet.dtos.RankingUnidadVentaDTO;
+import edu.unla.epicentro_gourmet.dtos.TemporadaRecaudacionDTO;
 import edu.unla.epicentro_gourmet.entities.UnidadVenta;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface IReporteVentaService {
     Optional<ReporteVentaDTO> reporteDeFestival(long idFestival);
 
     List<RankingUnidadVentaDTO> rankingUnidadesPorRecaudacion(long idFestival);
+
+    List<TemporadaRecaudacionDTO> recaudacionPorTemporada();
 }
