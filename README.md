@@ -93,3 +93,8 @@ Proyecto desarrollado para la asignatura [Orientación a Objetos 2] - [2026 - Se
 | `CUPosicionRankingArianLeal` | Muestra la posición de la unidad de venta en el ranking de rentabilidiad. | Arian Gabriel Leal ([@ari2709](https://github.com/ari2709)) | [#38](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/38) |
 | `CUCambiarContraseñaJuanBoullon` | Permite al usuario cambiar su contraseña. | Juan Bautista Boullon ([@JuanBa7](https://github.com/JuanBa7)) | [#46](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/46) |
 | `CUPromedioRecaudacionTemporadaJuanBoullon` | Muestra el promedio de recaudación de cada temporada. | Juan Bautista Boullon ([@JuanBa7](https://github.com/JuanBa7)) | [#47](https://github.com/AJLM97/TPOO2Hito2Grupo11/pull/47) |
+
+## ApiRest y responsables
+
+| Tipo | Endpoint | Funcionalidad | Responsable | Pull-Request |
+|---|---|---|---|---|
