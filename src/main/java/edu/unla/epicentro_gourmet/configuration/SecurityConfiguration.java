@@ -37,7 +37,8 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/", "/index", "/home", "/festival/*",
                             "/festival/*/registrar", "/festival/*/guardar",
                             "/css/*", "/imgs/*", "/js/*", "/vendor/bootstrap/css/*",
-                            "/vendor/jquery/*", "/vendor/bootstrap/js/*", "/api/v1/**").permitAll();
+                            "/vendor/jquery/*", "/vendor/bootstrap/js/*", "/api/v1/**",
+                            "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login -> {
